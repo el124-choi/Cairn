@@ -109,6 +109,10 @@
 						<input id="course" type="text" autocomplete="off" placeholder="e.g. Computer Science">
 					</div>
 					<div class="field">
+						<label for="year-group">Year group (optional)</label>
+						<input id="year-group" type="text" autocomplete="off" placeholder="e.g. Year 12">
+					</div>
+					<div class="field">
 						<label for="due-date">Entry Year</label>
 						<input id="due-date" type="date" required>
 					</div>
@@ -132,6 +136,7 @@
 			<section class="card" aria-labelledby="response-title">
 				<div class="output-head">
 					<h2 id="response-title">Response</h2>
+					<button id="add-milestone-button" class="submit" type="button" disabled>+ Add milestone</button>
 				</div>
 				<p id="status" role="status" aria-live="polite">Your roadmap will appear here.</p>
 				<h3 id="roadmap-title"></h3>
@@ -150,6 +155,27 @@
 			<p id="dialog-description"></p>
 		</div>
 	</dialog>
+	<dialog id="add-milestone-dialog" aria-labelledby="add-milestone-title">
+		<div class="dialog-content">
+			<button class="dialog-close" id="close-add-milestone" type="button" aria-label="Close add milestone form">×</button>
+			<h2 id="add-milestone-title">Add a custom milestone</h2>
+			<form id="add-milestone-form">
+				<div class="field">
+					<label for="custom-milestone-name">Milestone name</label>
+					<input id="custom-milestone-name" type="text" maxlength="120" required>
+				</div>
+				<div class="field">
+					<label for="custom-milestone-date">Date</label>
+					<input id="custom-milestone-date" type="date" required>
+				</div>
+				<div class="field">
+					<label for="custom-milestone-description">Description</label>
+					<textarea id="custom-milestone-description" required></textarea>
+				</div>
+				<button class="submit" type="submit">Save milestone</button>
+			</form>
+		</div>
+	</dialog>
 	<script>
 		const form = document.querySelector('#request-form');
 		document.querySelector('#back-button').addEventListener('click', () => {
@@ -159,12 +185,16 @@
 		const keyInput = document.querySelector('#api-key');
 		const promptInput = document.querySelector('#prompt');
 		const courseInput = document.querySelector('#course');
+		const yearGroupInput = document.querySelector('#year-group');
 		const dueDateInput = document.querySelector('#due-date');
 		const submitButton = document.querySelector('#submit-button');
 		const output = document.querySelector('#output');
 		const roadmapTitle = document.querySelector('#roadmap-title');
 		const status = document.querySelector('#status');
 		const milestoneDialog = document.querySelector('#milestone-dialog');
+		const addMilestoneButton = document.querySelector('#add-milestone-button');
+		const addMilestoneDialog = document.querySelector('#add-milestone-dialog');
+		const addMilestoneForm = document.querySelector('#add-milestone-form');
 		const dialogTitle = document.querySelector('#dialog-title');
 		const dialogDue = document.querySelector('#dialog-due');
 		const dialogDescription = document.querySelector('#dialog-description');
@@ -227,12 +257,44 @@
 		milestoneDialog.addEventListener('click', (event) => {
 			if (event.target === milestoneDialog) milestoneDialog.close();
 		});
+		addMilestoneButton.addEventListener('click', () => {
+			if (!generatedRoadmap) return;
+			addMilestoneDialog.showModal();
+			document.querySelector('#custom-milestone-name').focus();
+		});
+		document.querySelector('#close-add-milestone').addEventListener('click', () => addMilestoneDialog.close());
+		addMilestoneDialog.addEventListener('click', (event) => {
+			if (event.target === addMilestoneDialog) addMilestoneDialog.close();
+		});
+		addMilestoneForm.addEventListener('submit', (event) => {
+			event.preventDefault();
+			if (!generatedRoadmap) return;
+
+			const title = document.querySelector('#custom-milestone-name').value.trim();
+			const [year, month, day] = document.querySelector('#custom-milestone-date').value.split('-');
+			const description = document.querySelector('#custom-milestone-description').value.trim();
+			if (!title || !year || !month || !day || !description) return;
+
+			generatedRoadmap.milestones.push({
+				title,
+				due: `${day}-${month}-${year}`,
+				description,
+				done: false
+			});
+			saveRoadmap();
+			renderTimeline();
+			addMilestoneForm.reset();
+			addMilestoneDialog.close();
+			status.textContent = `Added milestone: ${title}.`;
+			status.className = 'success';
+		});
 
 		form.addEventListener('submit', async (event) => {
 			event.preventDefault();
 
 			submitButton.disabled = true;
 			generatedRoadmap = null;
+			addMilestoneButton.disabled = true;
 			clearSavedRoadmap();
 			submitButton.textContent = 'Generating…';
 			status.textContent = 'Requesting structured output from Gemini…';
@@ -245,8 +307,11 @@
 			try {
 				const [year, month, day] = dueDateInput.value.split('-');
 				const dueDate = `${day}-${month}-${year}`;
-				const courseContext = courseInput.value.trim() ? `\n\nCourse: ${courseInput.value.trim()}. Tailor the milestones to this course.` : '';
-				const roadmapPrompt = `${promptInput.value.trim()}${courseContext}\n\nTarget completion date: ${dueDate}. Create realistic milestones that lead to this date, and provide each milestone's due date in DD-MM-YYYY format.`;
+				const context = [
+					courseInput.value.trim() ? `Course: ${courseInput.value.trim()}.` : '',
+					yearGroupInput.value.trim() ? `Year group: ${yearGroupInput.value.trim()}.` : ''
+				].filter(Boolean).join('\n');
+				const roadmapPrompt = `${promptInput.value.trim()}${context ? `\n\n${context}` : ''}\n\nTarget completion date: ${dueDate}. Create realistic milestones that lead to this date, and provide each milestone's due date in DD-MM-YYYY format.`;
 				const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=' + encodeURIComponent(keyInput.value.trim());
 				const response = await fetch(url, {
 					method: 'POST',
@@ -284,6 +349,8 @@
 		});
 
 		function renderTimeline() {
+			addMilestoneButton.disabled = !generatedRoadmap;
+			sortMilestonesByDate();
 			output.replaceChildren(timelineTrack);
 			for (const [index, milestone] of generatedRoadmap.milestones.entries()) {
 				const item = document.createElement('li');
@@ -383,10 +450,43 @@
 
 		function saveRoadmap() {
 			try {
+				sortMilestonesByDate();
 				localStorage.setItem(ROADMAP_STORAGE_KEY, JSON.stringify(generatedRoadmap));
 			} catch (error) {
 				console.warn('Could not save the roadmap in this browser.', error);
 			}
+		}
+
+		function sortMilestonesByDate() {
+			if (!Array.isArray(generatedRoadmap?.milestones)) return;
+			generatedRoadmap.milestones.sort((first, second) => {
+				const firstDate = parseMilestoneDate(first.due);
+				const secondDate = parseMilestoneDate(second.due);
+				if (firstDate === null && secondDate === null) return 0;
+				if (firstDate === null) return 1;
+				if (secondDate === null) return -1;
+				return firstDate - secondDate;
+			});
+		}
+
+		function parseMilestoneDate(value) {
+			if (typeof value !== 'string') return null;
+			const dateText = value.trim();
+			let year, month, day;
+			let match = dateText.match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{4})$/);
+			if (match) [, day, month, year] = match;
+			else {
+				match = dateText.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+				if (!match) return null;
+				[, year, month, day] = match;
+			}
+			year = Number(year);
+			month = Number(month);
+			day = Number(day);
+			if (month < 1 || month > 12 || day < 1 || day > 31) return null;
+			const parsed = new Date(Date.UTC(year, month - 1, day));
+			if (parsed.getUTCFullYear() !== year || parsed.getUTCMonth() !== month - 1 || parsed.getUTCDate() !== day) return null;
+			return parsed.getTime();
 		}
 
 		function clearSavedRoadmap() {
@@ -402,6 +502,8 @@
 				const saved = JSON.parse(localStorage.getItem(ROADMAP_STORAGE_KEY));
 				if (!saved || !Array.isArray(saved.milestones)) return;
 				generatedRoadmap = saved;
+				sortMilestonesByDate();
+				saveRoadmap();
 				roadmapTitle.textContent = saved.title || 'Roadmap';
 				renderTimeline();
 				status.textContent = 'Saved roadmap restored. Your progress is ready to continue.';
