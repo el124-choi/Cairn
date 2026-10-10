@@ -1,0 +1,296 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ROADMAP | Create Player</title>
+  <link rel="stylesheet" href="avatar.css">
+  <script src="avatar.js" defer></script>
+</head>
+<body>
+
+<div class="arcade-label">
+  <span>✦ ROADMAP ARCADE ✦</span>
+  <span>NEW GAME / PLAYER SETUP</span>
+</div>
+
+<main class="creator-layout">
+
+  <!-- CHARACTER TV -->
+
+  <section class="character-tv">
+
+    <div class="tv-bezel">
+      <div class="tv-screen">
+
+        <div class="pixel-label">
+          CHARACTER PREVIEW
+        </div>
+
+        <svg id="avatar" viewBox="0 0 200 300"
+             xmlns="http://www.w3.org/2000/svg"
+             role="img"
+             aria-label="Customisable stick-figure avatar">
+
+          <!-- Legs -->
+          <path d="M83 211 L77 263 M117 211 L123 263"
+                stroke="#332B31"
+                stroke-width="9"
+                stroke-linecap="round"/>
+
+          <!-- Shoes -->
+          <path d="M77 263 L59 272 M123 263 L141 272"
+                stroke="#332B31"
+                stroke-width="10"
+                stroke-linecap="round"/>
+
+          <!-- Arms -->
+          <path d="M73 146 L47 194 M127 146 L153 194"
+                stroke="#332B31"
+                stroke-width="8"
+                stroke-linecap="round"/>
+
+          <!-- Top: T-shirt or hoodie -->
+          <g id="top-tshirt">
+            <path d="M79 133 L60 145 L71 167
+                     L78 161 L78 207 L122 207
+                     L122 161 L129 167 L140 145
+                     L121 133 Z"
+                  fill="#E9BD59"
+                  stroke="#332B31"
+                  stroke-width="4"/>
+          </g>
+
+          <g id="top-hoodie" class="hidden">
+            <path d="M79 132 L60 145 L69 171
+                     L77 165 L77 208 L123 208
+                     L123 165 L131 171 L140 145
+                     L121 132 Z"
+                  fill="#A9C8B2"
+                  stroke="#332B31"
+                  stroke-width="4"/>
+            <path d="M82 136 Q100 164 118 136"
+                  fill="none" stroke="#332B31"
+                  stroke-width="3"/>
+            <path d="M92 157 L92 177 M108 157 L108 177"
+                  stroke="#332B31" stroke-width="2"/>
+            <path d="M87 190 L113 190"
+                  stroke="#332B31" stroke-width="3"/>
+          </g>
+
+          <!-- Pants -->
+          <g id="pants-jeans">
+            <path d="M78 205 H122 L119 230
+                     H103 L100 218 L97 230
+                     H81 Z"
+                  fill="#6C88B4"
+                  stroke="#332B31"
+                  stroke-width="4"/>
+          </g>
+
+          <g id="pants-coral" class="hidden">
+            <path d="M78 205 H122 L119 230
+                     H103 L100 218 L97 230
+                     H81 Z"
+                  fill="#E99B8D"
+                  stroke="#332B31"
+                  stroke-width="4"/>
+          </g>
+
+          <!-- Head -->
+          <circle cx="100" cy="100" r="36"
+                  fill="#E8B992"
+                  stroke="#332B31"
+                  stroke-width="4"/>
+
+          <!-- Face -->
+          <circle cx="88" cy="100" r="3"
+                  fill="#332B31"/>
+          <circle cx="112" cy="100" r="3"
+                  fill="#332B31"/>
+          <path d="M91 115 Q100 123 109 115"
+                fill="none" stroke="#332B31"
+                stroke-width="3"
+                stroke-linecap="round"/>
+
+          <!-- Hat: top hat -->
+          <g id="hat-top">
+            <rect x="75" y="31" width="50" height="42"
+                  rx="3" fill="#C9785B"
+                  stroke="#332B31" stroke-width="4"/>
+            <rect x="65" y="67" width="70" height="11"
+                  rx="2" fill="#C9785B"
+                  stroke="#332B31" stroke-width="4"/>
+            <path d="M77 60 H123"
+                  stroke="#E9BD59" stroke-width="6"/>
+          </g>
+
+          <!-- Hat: cap -->
+          <g id="hat-cap" class="hidden">
+            <path d="M66 81 Q67 47 100 46
+                     Q133 47 134 81 Z"
+                  fill="#789B81"
+                  stroke="#332B31"
+                  stroke-width="4"/>
+            <path d="M100 79 H151 Q149 88 132 88 H100"
+                  fill="#789B81"
+                  stroke="#332B31"
+                  stroke-width="4"/>
+          </g>
+
+        </svg>
+
+        <div class="character-name" id="preview-name">
+          PLAYER ONE
+        </div>
+
+        <div class="level-label">
+          ★ LEVEL 01 · ROOKIE ★
+        </div>
+
+      </div>
+    </div>
+
+    <div class="tv-bottom">
+      <span>ROADMAP 1998</span>
+      <span class="power-light"></span>
+    </div>
+
+  </section>
+
+
+  <!-- CHARACTER CONTROLS -->
+
+  <section class="creator-remote">
+
+    <h1>CREATE PLAYER</h1>
+
+    <label for="player-name" class="field-label">
+      ✦ YOUR PLAYER NAME
+    </label>
+
+    <input id="player-name"
+           type="text"
+           maxlength="20"
+           placeholder="ENTER NAME..."
+           autocomplete="nickname">
+
+    <p class="hint">Choose your adventurer's name!</p>
+
+    
+<div class="option-section">
+  <h2>00 / CHOOSE YOUR CHARACTER</h2>
+
+  <div class="gender-grid">
+    <button class="gender-option active"
+            type="button"
+            data-gender="male">
+      <span>♂</span>
+      MALE
+    </button>
+
+    <button class="gender-option"
+            type="button"
+            data-gender="female">
+      <span>♀</span>
+      FEMALE
+    </button>
+
+    <button class="gender-option"
+            type="button"
+            data-gender="nonbinary">
+      <span>⚧</span>
+      NON-BINARY
+    </button>
+  </div>
+</div>
+
+
+    <div class="option-section">
+      <h2>01 / CHOOSE TOP</h2>
+
+      <div class="option-grid">
+        <button class="option active"
+                type="button"
+                data-category="top"
+                data-value="tshirt">
+          <span class="swatch yellow"></span>
+          T-SHIRT
+        </button>
+
+        <button class="option"
+                type="button"
+                data-category="top"
+                data-value="hoodie">
+          <span class="swatch mint"></span>
+          HOODIE
+        </button>
+      </div>
+    </div>
+
+    <div class="option-section">
+      <h2>02 / CHOOSE PANTS</h2>
+
+      <div class="option-grid">
+        <button class="option active"
+                type="button"
+                data-category="pants"
+                data-value="jeans">
+          <span class="swatch blue"></span>
+          JEANS
+        </button>
+
+        <button class="option"
+                type="button"
+                data-category="pants"
+                data-value="coral">
+          <span class="swatch coral"></span>
+          CORAL
+        </button>
+      </div>
+    </div>
+
+    <div class="option-section">
+      <h2>03 / CHOOSE HAT</h2>
+
+      <div class="option-grid">
+        <button class="option active"
+                type="button"
+                data-category="hat"
+                data-value="top">
+          🎩 TOP HAT
+        </button>
+
+        <button class="option"
+                type="button"
+                data-category="hat"
+                data-value="cap">
+          🧢 CAP
+        </button>
+      </div>
+    </div>
+    
+    <div class="unlock-note">
+      🔒 MORE OUTFITS COMING SOON!
+      <p>Complete quests and earn XP to unlock new looks.</p>
+    </div>
+
+    <button id="create-player" class="create-button"
+            type="button">
+      ▶ CREATE PLAYER
+    </button>
+
+    <p id="error-message" class="error-message"
+       role="alert"></p>
+
+  </section>
+
+</main>
+
+<footer>
+  ✦ EVERY GREAT ADVENTURE STARTS WITH A CHARACTER ✦
+</footer>
+
+</body>
+</html>
