@@ -40,14 +40,23 @@ body {
   line-height: 2;
 }
 
+
 .creator-layout {
-  width: min(1150px, 92%);
-  margin: 20px auto 70px;
+  width: min(1250px, 94%);
+  margin: 35px auto 70px;
+
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
   gap: 55px;
 }
+
+.character-tv {
+  position: sticky;
+  top: 25px;
+  align-self: start;
+}
+
 
 /* TELEVISION */
 
@@ -425,5 +434,296 @@ footer {
   .gender-option {
     font-size: 6px;
     padding: 10px 3px;
+  }
+}
+
+
+
+/* COLOUR CUSTOMISATION
+   Keeps the cosy ROADMAP theme */
+
+.colour-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.colour-option {
+  width: 100%;
+  aspect-ratio: 1;
+  min-height: 44px;
+
+  background: var(--swatch);
+  border: 4px solid var(--dark);
+  border-radius: 5px;
+
+  box-shadow: 4px 4px 0 var(--brown);
+  cursor: pointer;
+  position: relative;
+}
+
+.colour-option:hover {
+  transform: translateY(-3px);
+  box-shadow: 4px 7px 0 var(--brown);
+}
+
+.colour-option.active {
+  outline: 3px solid var(--yellow);
+  outline-offset: 3px;
+}
+
+.colour-option.active::after {
+  content: "✓";
+  position: absolute;
+  inset: 0;
+
+  display: grid;
+  place-items: center;
+
+  font-family: 'Press Start 2P', monospace;
+  font-size: 15px;
+  color: var(--dark);
+  text-shadow: 1px 1px white;
+}
+
+.colour-option:focus-visible {
+  outline: 3px solid white;
+  outline-offset: 4px;
+}
+
+.colour-option:disabled {
+  filter: grayscale(1) brightness(.7);
+  cursor: not-allowed;
+}
+
+.colour-option:disabled::after {
+  content: "🔒";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+}
+
+
+/* STEP-BY-STEP CHARACTER CREATOR */
+
+.creator-step {
+  display: none;
+  min-height: 280px;
+}
+
+.creator-step.active-step {
+  display: block;
+}
+
+.creator-step h2 {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 12px;
+  line-height: 2;
+  margin-bottom: 25px;
+}
+
+.creator-step h3 {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  margin: 28px 0 18px;
+}
+
+.step-progress {
+  margin-bottom: 35px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+}
+
+.progress-track {
+  height: 14px;
+  margin-top: 15px;
+  background: #493E52;
+  border: 3px solid var(--dark);
+}
+
+#progress-fill {
+  width: 20%;
+  height: 100%;
+  background: var(--yellow);
+  transition: width .2s;
+}
+
+.choice-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.choice-grid.three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.choice {
+  min-height: 70px;
+  padding: 10px 5px;
+  background: var(--paper);
+  border: 4px solid var(--dark);
+  color: var(--dark);
+  box-shadow: 4px 4px 0 #29252A;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  line-height: 1.8;
+  cursor: pointer;
+  overflow-wrap: anywhere;
+}
+
+.choice.selected {
+  background: var(--yellow);
+  outline: 3px solid var(--paper);
+  outline-offset: 2px;
+}
+
+.colour-choices {
+  display: flex;
+  gap: 20px;
+}
+
+.colour-choice {
+  width: 55px;
+  height: 55px;
+  border: 4px solid var(--dark);
+  box-shadow: 4px 4px 0 #29252A;
+  cursor: pointer;
+}
+
+.colour-choice.white {
+  background: #FFFFFF;
+}
+
+.colour-choice.black {
+  background: #222222;
+}
+
+.colour-choice.selected {
+  outline: 3px solid var(--yellow);
+  outline-offset: 4px;
+}
+
+.locked-message {
+  margin-top: 35px;
+  padding: 15px;
+  background: #493E52;
+  border: 3px dashed var(--yellow);
+  color: var(--paper);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  line-height: 2;
+}
+
+.step-navigation {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.step-navigation button {
+  flex: 1;
+  min-width: 0;
+  padding: 16px 8px;
+  background: var(--yellow);
+  border: 4px solid var(--dark);
+  color: var(--dark);
+  box-shadow: 4px 4px 0 #29252A;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  line-height: 1.8;
+  cursor: pointer;
+}
+
+.step-navigation button:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+}
+
+.choice:focus-visible,
+.colour-choice:focus-visible,
+.step-navigation button:focus-visible {
+  outline: 3px solid white;
+  outline-offset: 5px;
+}
+
+@media (max-width: 450px) {
+  .choice-grid.three {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+/* KEEP ONLY THE CURRENT STEP VISIBLE */
+
+.creator-remote .creator-step {
+  display: none;
+}
+
+.creator-remote .creator-step.active-step {
+  display: block;
+}
+
+/* KEEP THE PANEL A REASONABLE SIZE */
+
+.creator-remote {
+  min-height: 470px;
+}
+
+/* MAKE STEP BUTTONS MATCH THE RETRO THEME */
+
+.creator-remote .choice {
+  appearance: none;
+  background: var(--paper);
+  color: var(--dark);
+  border: 4px solid var(--dark);
+  border-radius: 5px;
+  padding: 16px 8px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  cursor: pointer;
+}
+
+.creator-remote .choice.selected {
+  background: var(--yellow);
+}
+
+/* WHITE AND BLACK COLOUR BUTTONS */
+
+.creator-remote .colour-choice {
+  appearance: none;
+  width: 55px;
+  height: 55px;
+  border: 4px solid var(--dark);
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.creator-remote .colour-choice.white {
+  background: #FFFFFF;
+}
+
+.creator-remote .colour-choice.black {
+  background: #222222;
+}
+
+.creator-remote .colour-choice.selected {
+  outline: 3px solid var(--yellow);
+  outline-offset: 4px;
+}
+
+/* MOBILE */
+
+@media (max-width: 850px) {
+  .creator-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .character-tv {
+    position: static;
   }
 }

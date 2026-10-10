@@ -162,129 +162,158 @@
 
   <!-- CHARACTER CONTROLS -->
 
-  <section class="creator-remote">
+ 
 
-    <h1>CREATE PLAYER</h1>
+<section class="creator-remote">
 
-    <label for="player-name" class="field-label">
-      ✦ YOUR PLAYER NAME
-    </label>
+  <h1>CREATE PLAYER</h1>
 
-    <input id="player-name"
-           type="text"
-           maxlength="20"
-           placeholder="ENTER NAME..."
-           autocomplete="nickname">
+  <div class="step-progress">
+    <span id="step-label">STEP 1 OF 5</span>
+    <div class="progress-track">
+      <div id="progress-fill"></div>
+    </div>
+  </div>
 
-    <p class="hint">Choose your adventurer's name!</p>
+  <!-- STEP 1: GENDER -->
+<div class="creator-step active-step" data-step="0">
+  <h2>CHOOSE YOUR CHARACTER</h2>
 
-    
-<div class="option-section">
-  <h2>00 / CHOOSE YOUR CHARACTER</h2>
-
-  <div class="gender-grid">
-    <button class="gender-option active"
-            type="button"
-            data-gender="male">
-      <span>♂</span>
+  <div class="choice-grid three">
+    <button class="choice selected" type="button"
+            data-category="gender" data-value="male">
       MALE
     </button>
 
-    <button class="gender-option"
-            type="button"
-            data-gender="female">
-      <span>♀</span>
+    <button class="choice" type="button"
+            data-category="gender" data-value="female">
       FEMALE
     </button>
 
-    <button class="gender-option"
-            type="button"
-            data-gender="nonbinary">
-      <span>⚧</span>
+    <button class="choice" type="button"
+            data-category="gender" data-value="nonbinary">
       NON-BINARY
     </button>
   </div>
+  
 </div>
 
+  <!-- STEP 2: TOP -->
+  <div class="creator-step" data-step="1">
+    <h2>CHOOSE YOUR TOP</h2>
 
-    <div class="option-section">
-      <h2>01 / CHOOSE TOP</h2>
-
-      <div class="option-grid">
-        <button class="option active"
-                type="button"
-                data-category="top"
-                data-value="tshirt">
-          <span class="swatch yellow"></span>
-          T-SHIRT
-        </button>
-
-        <button class="option"
-                type="button"
-                data-category="top"
-                data-value="hoodie">
-          <span class="swatch mint"></span>
-          HOODIE
-        </button>
-      </div>
+    <div class="choice-grid">
+      <button class="choice selected" type="button"
+              data-category="top" data-value="tshirt">
+        T-SHIRT
+      </button>
+      <button class="choice" type="button"
+              data-category="top" data-value="hoodie">
+        HOODIE
+      </button>
     </div>
 
-    <div class="option-section">
-      <h2>02 / CHOOSE PANTS</h2>
-
-      <div class="option-grid">
-        <button class="option active"
-                type="button"
-                data-category="pants"
-                data-value="jeans">
-          <span class="swatch blue"></span>
-          JEANS
-        </button>
-
-        <button class="option"
-                type="button"
-                data-category="pants"
-                data-value="coral">
-          <span class="swatch coral"></span>
-          CORAL
-        </button>
-      </div>
+    <h3>CHOOSE A COLOUR</h3>
+    <div class="colour-choices" data-category="topColor">
+      <button class="colour-choice selected white"
+              type="button" data-value="#FFFFFF"
+              aria-label="White top"></button>
+      <button class="colour-choice black"
+              type="button" data-value="#222222"
+              aria-label="Black top"></button>
     </div>
 
-    <div class="option-section">
-      <h2>03 / CHOOSE HAT</h2>
+    <p class="locked-message">
+      🔒 MORE COLOURS UNLOCK AS YOU COMPLETE QUESTS!
+    </p>
+  </div>
 
-      <div class="option-grid">
-        <button class="option active"
-                type="button"
-                data-category="hat"
-                data-value="top">
-          🎩 TOP HAT
-        </button>
+  <!-- STEP 3: PANTS -->
+  <div class="creator-step" data-step="2">
+    <h2>CHOOSE YOUR PANTS</h2>
 
-        <button class="option"
-                type="button"
-                data-category="hat"
-                data-value="cap">
-          🧢 CAP
-        </button>
-      </div>
-    </div>
-    
-    <div class="unlock-note">
-      🔒 MORE OUTFITS COMING SOON!
-      <p>Complete quests and earn XP to unlock new looks.</p>
+    <div class="choice-grid">
+      <button class="choice selected" type="button"
+              data-category="pants" data-value="jeans">
+        JEANS
+      </button>
+      <button class="choice" type="button"
+              data-category="pants" data-value="coral">
+        TROUSERS
+      </button>
     </div>
 
-    <button id="create-player" class="create-button"
-            type="button">
-      ▶ CREATE PLAYER
+    <h3>CHOOSE A COLOUR</h3>
+    <div class="colour-choices" data-category="pantsColor">
+      <button class="colour-choice selected white"
+              type="button" data-value="#FFFFFF"
+              aria-label="White pants"></button>
+      <button class="colour-choice black"
+              type="button" data-value="#222222"
+              aria-label="Black pants"></button>
+    </div>
+
+    <p class="locked-message">
+      🔒 MORE COLOURS UNLOCK AS YOU COMPLETE QUESTS!
+    </p>
+  </div>
+
+  <!-- STEP 4: HAT -->
+  <div class="creator-step" data-step="3">
+    <h2>CHOOSE YOUR HAT</h2>
+
+    <div class="choice-grid">
+      <button class="choice selected" type="button"
+              data-category="hat" data-value="top">
+        🎩 TOP HAT
+      </button>
+      <button class="choice" type="button"
+              data-category="hat" data-value="cap">
+        🧢 CAP
+      </button>
+    </div>
+
+    <h3>CHOOSE A COLOUR</h3>
+    <div class="colour-choices" data-category="hatColor">
+      <button class="colour-choice selected white"
+              type="button" data-value="#FFFFFF"
+              aria-label="White hat"></button>
+      <button class="colour-choice black"
+              type="button" data-value="#222222"
+              aria-label="Black hat"></button>
+    </div>
+
+    <p class="locked-message">
+      🔒 MORE COLOURS UNLOCK AS YOU COMPLETE QUESTS!
+    </p>
+  </div>
+
+  <!-- STEP 5: NAME -->
+  <div class="creator-step" data-step="4">
+    <h2>NAME YOUR CHARACTER</h2>
+
+    <label for="player-name">PLAYER NAME</label>
+    <input id="player-name" type="text"
+           maxlength="20"
+           placeholder="ENTER NAME...">
+
+    <p>Ready to begin your adventure?</p>
+  </div>
+
+  <div class="step-navigation">
+    <button id="back-button" type="button" disabled>
+      ◀ BACK
     </button>
+    <button id="next-button" type="button">
+      NEXT ▶
+    </button>
+  </div>
 
-    <p id="error-message" class="error-message"
-       role="alert"></p>
+  <p id="error-message" role="alert"></p>
 
-  </section>
+</section>
+
+
 
 </main>
 
