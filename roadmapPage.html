@@ -3,9 +3,21 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>ROADMAP | Build Your Adventure</title>
+	<title>University Roadmap</title>
 	<link rel="stylesheet" href="homepage.css">
 	<style>
+		.arcade-label {
+			display: flex;
+			justify-content: space-between;
+			gap: 20px;
+			font-weight: 400;
+
+			padding: 20px 5%;
+
+			font-family: 'Press Start 2P', monospace;
+			font-size: 11px;
+			color: var(--brown);
+		}
 		.roadmap-main { width: min(1300px, 92%); margin: 0 auto; padding: 35px 0 75px; }
 		.roadmap-main > h1 { margin-bottom: 4px; color: var(--brown); font-size: clamp(22px, 3vw, 34px); text-align: center; text-shadow: 3px 3px 0 var(--shadow); }
 		.intro { color: var(--brown); text-align: center; }
@@ -15,6 +27,15 @@
 		#request-title, #request-form { text-align: center; }
 		.field { margin-bottom: 22px; }
 		.field > label { display: block; margin-bottom: 7px; font-weight: 700; text-align: center; }
+		.key-field-heading { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 7px; }
+		.key-field-heading label { margin: 0; font-weight: 700; }
+		.key-field-toggle { padding: 5px 8px; border: 3px solid var(--dark); background: var(--mustard); color: var(--dark); font-size: 8px; }
+		.roadmap-nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 22px; }
+		#roadmaps-button { margin-left: auto; }
+		.nav-button { display: inline-flex; align-items: center; gap: 8px; padding: 12px 16px; border: 4px solid var(--dark); background: var(--terracotta); color: var(--paper); box-shadow: 4px 4px 0 var(--dark); font-size: 9px; line-height: 1.8; transition: transform .15s ease, box-shadow .15s ease, background .15s ease; }
+		.nav-button:hover { transform: translate(2px, 2px); background: var(--brown); box-shadow: 2px 2px 0 var(--dark); }
+		.nav-button:active { transform: translate(4px, 4px); box-shadow: none; }
+		#gemini-key-field.is-collapsed #gemini-key-content { display: none; }
 		input, textarea { width: 100%; padding: 10px 12px; border: 4px solid var(--dark); border-radius: 0; background: #fff9e8; color: var(--dark); font: inherit; text-align: center; }
 		input:focus, textarea:focus, button:focus-visible { outline: 4px solid var(--terracotta); outline-offset: 3px; }
 		textarea { min-height: 140px; resize: vertical; }
@@ -68,32 +89,41 @@
 </head>
 <body>
 	<div class="website">
-	<div class="arcade-label">
-		<span>✦ ROADMAP ARCADE ✦</span>
-		<span>BUILD YOUR NEXT QUEST</span>
-	</div>
 	<main class="roadmap-main">
-		<h1>Create a Roadmap</h1>
-		<p class="intro">Enter your goal</p>
+		  <div class="roadmap-nav">
+
+				<button id="back-button" class="nav-button" type="button"> BACK </button>
+
+  			</div>
+		<h1>Create a University Roadmap</h1>
 		<div class="layout">
 			<section class="card" aria-labelledby="request-title">
-				<h2 id="request-title">Request</h2>
+				<h2 id="request-title">Enter your goal</h2>
 				<form id="request-form">
-					<div class="field">
-						<label for="api-key">Gemini API key</label>
-						<p class="hint">Create a key in Google AI Studio. Do not share it.</p>
-						<div class="key-row">
-							<input id="api-key" type="password" autocomplete="off" placeholder="Enter API key" required>
-							<button id="toggle-key" class="secondary" type="button">Show</button>
-						</div>
-					</div>
 					<div class="field">
 						<label for="prompt">What do you want to achieve?</label>
 						<textarea id="prompt" placeholder="I want to..." required></textarea>
 					</div>
 					<div class="field">
-						<label for="due-date">Target due date</label>
+						<label for="course">Course</label>
+						<input id="course" type="text" autocomplete="off" placeholder="e.g. Computer Science">
+					</div>
+					<div class="field">
+						<label for="due-date">Entry Year</label>
 						<input id="due-date" type="date" required>
+					</div>
+					<div class="field" id="gemini-key-field">
+						<div class="key-field-heading">
+							<label for="api-key">Gemini API key</label>
+							<button id="toggle-key-field" class="key-field-toggle" type="button" aria-expanded="true" aria-controls="gemini-key-content">Hide field</button>
+						</div>
+						<div id="gemini-key-content">
+							<p class="hint">Private Gemini Api key</p>
+							<div class="key-row">
+								<input id="api-key" type="password" autocomplete="off" placeholder="Enter API key" required>
+								<button id="toggle-key" class="secondary" type="button">Show</button>
+							</div>
+						</div>
 					</div>
 					<button class="submit" id="submit-button" type="submit">Generate Roadmap</button>
 				</form>
@@ -103,7 +133,7 @@
 				<div class="output-head">
 					<h2 id="response-title">Response</h2>
 				</div>
-				<p id="status" role="status" aria-live="polite">Your response will appear here.</p>
+				<p id="status" role="status" aria-live="polite">Your roadmap will appear here.</p>
 				<h3 id="roadmap-title"></h3>
 				<ol id="output" class="timeline" aria-label="Roadmap timeline">
 					<li id="timeline-track" class="timeline-track" role="progressbar" aria-label="Milestone progress" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0"><span id="timeline-fill" class="timeline-fill"></span><span id="timeline-smiley" class="timeline-smiley" role="img" aria-label="Smiley at the start of the timeline" hidden>🙂</span></li>
@@ -122,8 +152,13 @@
 	</dialog>
 	<script>
 		const form = document.querySelector('#request-form');
+		document.querySelector('#back-button').addEventListener('click', () => {
+			if (window.history.length > 1) window.history.back();
+			else window.location.href = 'homepage.html';
+		});
 		const keyInput = document.querySelector('#api-key');
 		const promptInput = document.querySelector('#prompt');
+		const courseInput = document.querySelector('#course');
 		const dueDateInput = document.querySelector('#due-date');
 		const submitButton = document.querySelector('#submit-button');
 		const output = document.querySelector('#output');
@@ -180,6 +215,13 @@
 			keyInput.type = reveal ? 'text' : 'password';
 			event.currentTarget.textContent = reveal ? 'Hide' : 'Show';
 		});
+		document.querySelector('#toggle-key-field').addEventListener('click', (event) => {
+			const keyField = document.querySelector('#gemini-key-field');
+			const expanded = event.currentTarget.getAttribute('aria-expanded') === 'true';
+			keyField.classList.toggle('is-collapsed', expanded);
+			event.currentTarget.setAttribute('aria-expanded', String(!expanded));
+			event.currentTarget.textContent = expanded ? 'Show field' : 'Hide field';
+		});
 
 		document.querySelector('#close-dialog').addEventListener('click', () => milestoneDialog.close());
 		milestoneDialog.addEventListener('click', (event) => {
@@ -203,7 +245,8 @@
 			try {
 				const [year, month, day] = dueDateInput.value.split('-');
 				const dueDate = `${day}-${month}-${year}`;
-				const roadmapPrompt = `${promptInput.value.trim()}\n\nTarget completion date: ${dueDate}. Create realistic milestones that lead to this date, and provide each milestone's due date in DD-MM-YYYY format.`;
+				const courseContext = courseInput.value.trim() ? `\n\nCourse: ${courseInput.value.trim()}. Tailor the milestones to this course.` : '';
+				const roadmapPrompt = `${promptInput.value.trim()}${courseContext}\n\nTarget completion date: ${dueDate}. Create realistic milestones that lead to this date, and provide each milestone's due date in DD-MM-YYYY format.`;
 				const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=' + encodeURIComponent(keyInput.value.trim());
 				const response = await fetch(url, {
 					method: 'POST',
