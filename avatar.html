@@ -1,325 +1,819 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>ROADMAP | Create Player</title>
+
   <link rel="stylesheet" href="avatar.css">
   <script src="avatar.js" defer></script>
 </head>
+
 <body>
 
-<div class="arcade-label">
-  <span>✦ ROADMAP ARCADE ✦</span>
-  <span>NEW GAME / PLAYER SETUP</span>
-</div>
+  <!-- RETRO ARCADE HEADER -->
 
-<main class="creator-layout">
+  <div class="arcade-label">
+    <span>✦ ROADMAP ARCADE ✦</span>
+    <span>NEW GAME / PLAYER SETUP</span>
+  </div>
 
-  <!-- CHARACTER TV -->
 
-  <section class="character-tv">
+  <main class="creator-layout">
 
-    <div class="tv-bezel">
-      <div class="tv-screen">
+    <!-- ======================================
+         CHARACTER PREVIEW TELEVISION
+    ====================================== -->
 
-        <div class="pixel-label">
-          CHARACTER PREVIEW
-        </div>
+    <section class="character-tv">
 
-        <svg id="avatar" viewBox="0 0 200 300"
-             xmlns="http://www.w3.org/2000/svg"
-             role="img"
-             aria-label="Customisable stick-figure avatar">
+      <div class="tv-bezel">
 
-          <!-- Legs -->
-          <path d="M83 211 L77 263 M117 211 L123 263"
+        <div class="tv-screen">
+
+          <div class="pixel-label">
+            CHARACTER PREVIEW
+          </div>
+
+          <svg
+            id="avatar"
+            viewBox="0 0 200 300"
+            xmlns="http://www.w3.org/2000/svg"
+            role="img"
+            aria-label="Customisable stick figure character">
+
+            <!-- ==========================
+                 LEGS AND SHOES
+            ========================== -->
+
+            <path
+              d="M83 211 L77 263 M117 211 L123 263"
+              stroke="#332B31"
+              stroke-width="9"
+              stroke-linecap="round"
+              fill="none"
+            />
+
+            <path
+              d="M77 263 L59 272 M123 263 L141 272"
+              stroke="#332B31"
+              stroke-width="10"
+              stroke-linecap="round"
+              fill="none"
+            />
+
+
+            <!-- ==========================
+                 ARMS
+            ========================== -->
+
+            <path
+              d="M73 146 L47 194 M127 146 L153 194"
+              stroke="#332B31"
+              stroke-width="8"
+              stroke-linecap="round"
+              fill="none"
+            />
+
+
+            <!-- ==========================
+                 TOP: T-SHIRT
+            ========================== -->
+
+            <g id="top-tshirt">
+
+              <path
+                class="avatar-top-fill"
+                d="M79 133
+                   L60 145
+                   L71 167
+                   L78 161
+                   L78 207
+                   L122 207
+                   L122 161
+                   L129 167
+                   L140 145
+                   L121 133 Z"
+                fill="#FFFFFF"
                 stroke="#332B31"
-                stroke-width="9"
-                stroke-linecap="round"/>
+                stroke-width="4"
+              />
 
-          <!-- Shoes -->
-          <path d="M77 263 L59 272 M123 263 L141 272"
+            </g>
+
+
+            <!-- ==========================
+                 TOP: HOODIE
+            ========================== -->
+
+            <g id="top-hoodie" class="hidden">
+
+              <path
+                class="avatar-top-fill"
+                d="M79 132
+                   L60 145
+                   L69 171
+                   L77 165
+                   L77 208
+                   L123 208
+                   L123 165
+                   L131 171
+                   L140 145
+                   L121 132 Z"
+                fill="#FFFFFF"
                 stroke="#332B31"
-                stroke-width="10"
-                stroke-linecap="round"/>
+                stroke-width="4"
+              />
 
-          <!-- Arms -->
-          <path d="M73 146 L47 194 M127 146 L153 194"
+              <path
+                d="M82 136 Q100 164 118 136"
+                fill="none"
                 stroke="#332B31"
-                stroke-width="8"
-                stroke-linecap="round"/>
-
-          <!-- Top: T-shirt or hoodie -->
-          <g id="top-tshirt">
-            <path d="M79 133 L60 145 L71 167
-                     L78 161 L78 207 L122 207
-                     L122 161 L129 167 L140 145
-                     L121 133 Z"
-                  fill="#E9BD59"
-                  stroke="#332B31"
-                  stroke-width="4"/>
-          </g>
-
-          <g id="top-hoodie" class="hidden">
-            <path d="M79 132 L60 145 L69 171
-                     L77 165 L77 208 L123 208
-                     L123 165 L131 171 L140 145
-                     L121 132 Z"
-                  fill="#A9C8B2"
-                  stroke="#332B31"
-                  stroke-width="4"/>
-            <path d="M82 136 Q100 164 118 136"
-                  fill="none" stroke="#332B31"
-                  stroke-width="3"/>
-            <path d="M92 157 L92 177 M108 157 L108 177"
-                  stroke="#332B31" stroke-width="2"/>
-            <path d="M87 190 L113 190"
-                  stroke="#332B31" stroke-width="3"/>
-          </g>
-
-          <!-- Pants -->
-          <g id="pants-jeans">
-            <path d="M78 205 H122 L119 230
-                     H103 L100 218 L97 230
-                     H81 Z"
-                  fill="#6C88B4"
-                  stroke="#332B31"
-                  stroke-width="4"/>
-          </g>
-
-          <g id="pants-coral" class="hidden">
-            <path d="M78 205 H122 L119 230
-                     H103 L100 218 L97 230
-                     H81 Z"
-                  fill="#E99B8D"
-                  stroke="#332B31"
-                  stroke-width="4"/>
-          </g>
-
-          <!-- Head -->
-          <circle cx="100" cy="100" r="36"
-                  fill="#E8B992"
-                  stroke="#332B31"
-                  stroke-width="4"/>
-
-          <!-- Face -->
-          <circle cx="88" cy="100" r="3"
-                  fill="#332B31"/>
-          <circle cx="112" cy="100" r="3"
-                  fill="#332B31"/>
-          <path d="M91 115 Q100 123 109 115"
-                fill="none" stroke="#332B31"
                 stroke-width="3"
-                stroke-linecap="round"/>
+              />
 
-          <!-- Hat: top hat -->
-          <g id="hat-top">
-            <rect x="75" y="31" width="50" height="42"
-                  rx="3" fill="#C9785B"
-                  stroke="#332B31" stroke-width="4"/>
-            <rect x="65" y="67" width="70" height="11"
-                  rx="2" fill="#C9785B"
-                  stroke="#332B31" stroke-width="4"/>
-            <path d="M77 60 H123"
-                  stroke="#E9BD59" stroke-width="6"/>
-          </g>
+              <path
+                d="M92 157 L92 177 M108 157 L108 177"
+                fill="none"
+                stroke="#332B31"
+                stroke-width="2"
+              />
 
-          <!-- Hat: cap -->
-          <g id="hat-cap" class="hidden">
-            <path d="M66 81 Q67 47 100 46
-                     Q133 47 134 81 Z"
-                  fill="#789B81"
-                  stroke="#332B31"
-                  stroke-width="4"/>
-            <path d="M100 79 H151 Q149 88 132 88 H100"
-                  fill="#789B81"
-                  stroke="#332B31"
-                  stroke-width="4"/>
-          </g>
+              <path
+                d="M87 190 L113 190"
+                fill="none"
+                stroke="#332B31"
+                stroke-width="3"
+              />
 
-        </svg>
+            </g>
 
-        <div class="character-name" id="preview-name">
-          PLAYER ONE
-        </div>
 
-        <div class="level-label">
-          ★ LEVEL 01 · ROOKIE ★
+            <!-- ==========================
+                 PANTS: JEANS
+            ========================== -->
+
+            <g id="pants-jeans">
+
+              <path
+                class="avatar-pants-fill"
+                d="M78 205
+                   H122
+                   L119 230
+                   H103
+                   L100 218
+                   L97 230
+                   H81 Z"
+                fill="#FFFFFF"
+                stroke="#332B31"
+                stroke-width="4"
+              />
+
+            </g>
+
+
+            <!-- ==========================
+                 PANTS: TROUSERS
+            ========================== -->
+
+            <g id="pants-coral" class="hidden">
+
+              <path
+                class="avatar-pants-fill"
+                d="M78 205
+                   H122
+                   L119 238
+                   H105
+                   L100 218
+                   L95 238
+                   H81 Z"
+                fill="#FFFFFF"
+                stroke="#332B31"
+                stroke-width="4"
+              />
+
+            </g>
+
+
+            <!-- ======================================
+                 HAIR BEHIND THE HEAD
+                 THESE MUST BE BEFORE THE FACE
+            ====================================== -->
+
+            <!-- SHORT HAIR BACK -->
+
+            <g id="hair-short">
+
+              <path
+                class="avatar-hair-fill"
+                d="M64 100
+                   Q59 58 83 53
+                   Q100 40 120 53
+                   Q141 61 136 101
+                   L126 94
+                   L74 94 Z"
+                fill="#222222"
+                stroke="#332B31"
+                stroke-width="4"
+              />
+
+            </g>
+
+
+            <!-- LONG HAIR BACK -->
+
+            <g id="hair-long" class="hidden">
+
+              <path
+                class="avatar-hair-fill"
+                d="M64 100
+                   Q57 48 100 47
+                   Q143 48 136 100
+                   L145 164
+                   L121 164
+                   L121 108
+                   L79 108
+                   L79 164
+                   L55 164 Z"
+                fill="#222222"
+                stroke="#332B31"
+                stroke-width="4"
+              />
+
+            </g>
+
+
+            <!-- ======================================
+                 HEAD AND FACE
+            ====================================== -->
+
+            <circle
+              cx="100"
+              cy="100"
+              r="36"
+              fill="#E8B992"
+              stroke="#332B31"
+              stroke-width="4"
+            />
+
+            <!-- EYES -->
+
+            <circle
+              cx="88"
+              cy="101"
+              r="3"
+              fill="#332B31"
+            />
+
+            <circle
+              cx="112"
+              cy="101"
+              r="3"
+              fill="#332B31"
+            />
+
+            <!-- SMILE -->
+
+            <path
+              d="M91 115 Q100 123 109 115"
+              fill="none"
+              stroke="#332B31"
+              stroke-width="3"
+              stroke-linecap="round"
+            />
+
+
+            <!-- ======================================
+                 HAIR ABOVE THE FOREHEAD
+            ====================================== -->
+
+            <!-- SHORT HAIR FRINGE -->
+
+            <g id="hair-short-fringe">
+
+              <path
+                class="avatar-hair-fill"
+                d="M66 84
+                   Q70 59 92 62
+                   Q105 52 119 64
+                   Q132 68 134 84
+                   Q117 79 111 72
+                   Q93 85 83 76
+                   Q76 84 66 84 Z"
+                fill="#222222"
+                stroke="#332B31"
+                stroke-width="3"
+              />
+
+            </g>
+
+
+            <!-- LONG HAIR FRINGE -->
+
+            <g id="hair-long-fringe" class="hidden">
+
+              <path
+                class="avatar-hair-fill"
+                d="M65 88
+                   Q67 58 100 59
+                   Q133 58 135 88
+                   Q115 80 107 72
+                   Q91 91 65 88 Z"
+                fill="#222222"
+                stroke="#332B31"
+                stroke-width="3"
+              />
+
+            </g>
+
+
+            <!-- ======================================
+                 HATS - AVAILABLE TO EVERYONE
+            ====================================== -->
+
+            <!-- TOP HAT -->
+
+            <g id="hat-top" class="hidden">
+
+              <rect
+                class="avatar-hat-fill"
+                x="75"
+                y="31"
+                width="50"
+                height="42"
+                rx="3"
+                fill="#FFFFFF"
+                stroke="#332B31"
+                stroke-width="4"
+              />
+
+              <rect
+                class="avatar-hat-fill"
+                x="65"
+                y="67"
+                width="70"
+                height="11"
+                rx="2"
+                fill="#FFFFFF"
+                stroke="#332B31"
+                stroke-width="4"
+              />
+
+              <path
+                d="M77 60 H123"
+                fill="none"
+                stroke="#E9BD59"
+                stroke-width="5"
+              />
+
+            </g>
+
+
+            <!-- BASEBALL CAP -->
+
+            <g id="hat-cap" class="hidden">
+
+              <path
+                class="avatar-hat-fill"
+                d="M66 81
+                   Q67 47 100 46
+                   Q133 47 134 81 Z"
+                fill="#FFFFFF"
+                stroke="#332B31"
+                stroke-width="4"
+              />
+
+              <path
+                class="avatar-hat-fill"
+                d="M100 79
+                   H151
+                   Q149 88 132 88
+                   H100 Z"
+                fill="#FFFFFF"
+                stroke="#332B31"
+                stroke-width="4"
+              />
+
+            </g>
+
+          </svg>
+
+
+          <!-- CHARACTER NAME -->
+
+          <div class="character-name" id="preview-name">
+            PLAYER ONE
+          </div>
+
+          <div class="level-label">
+            ★ LEVEL 01 · ROOKIE ★
+          </div>
+
         </div>
 
       </div>
-    </div>
-
-    <div class="tv-bottom">
-      <span>ROADMAP 1998</span>
-      <span class="power-light"></span>
-    </div>
-
-  </section>
 
 
-  <!-- CHARACTER CONTROLS -->
+      <!-- TV CONTROLS -->
 
- 
+      <div class="tv-bottom">
+        <span>ROADMAP 1998</span>
+        <span class="power-light"></span>
+      </div>
 
-<section class="creator-remote">
-
-  <h1>CREATE PLAYER</h1>
-
-  <div class="step-progress">
-    <span id="step-label">STEP 1 OF 5</span>
-    <div class="progress-track">
-      <div id="progress-fill"></div>
-    </div>
-  </div>
-
-  <!-- STEP 1: GENDER -->
-<div class="creator-step active-step" data-step="0">
-  <h2>CHOOSE YOUR CHARACTER</h2>
-
-  <div class="choice-grid three">
-    <button class="choice selected" type="button"
-            data-category="gender" data-value="male">
-      MALE
-    </button>
-
-    <button class="choice" type="button"
-            data-category="gender" data-value="female">
-      FEMALE
-    </button>
-
-    <button class="choice" type="button"
-            data-category="gender" data-value="nonbinary">
-      NON-BINARY
-    </button>
-  </div>
-  
-</div>
-
-  <!-- STEP 2: TOP -->
-  <div class="creator-step" data-step="1">
-    <h2>CHOOSE YOUR TOP</h2>
-
-    <div class="choice-grid">
-      <button class="choice selected" type="button"
-              data-category="top" data-value="tshirt">
-        T-SHIRT
-      </button>
-      <button class="choice" type="button"
-              data-category="top" data-value="hoodie">
-        HOODIE
-      </button>
-    </div>
-
-    <h3>CHOOSE A COLOUR</h3>
-    <div class="colour-choices" data-category="topColor">
-      <button class="colour-choice selected white"
-              type="button" data-value="#FFFFFF"
-              aria-label="White top"></button>
-      <button class="colour-choice black"
-              type="button" data-value="#222222"
-              aria-label="Black top"></button>
-    </div>
-
-    <p class="locked-message">
-      🔒 MORE COLOURS UNLOCK AS YOU COMPLETE QUESTS!
-    </p>
-  </div>
-
-  <!-- STEP 3: PANTS -->
-  <div class="creator-step" data-step="2">
-    <h2>CHOOSE YOUR PANTS</h2>
-
-    <div class="choice-grid">
-      <button class="choice selected" type="button"
-              data-category="pants" data-value="jeans">
-        JEANS
-      </button>
-      <button class="choice" type="button"
-              data-category="pants" data-value="coral">
-        TROUSERS
-      </button>
-    </div>
-
-    <h3>CHOOSE A COLOUR</h3>
-    <div class="colour-choices" data-category="pantsColor">
-      <button class="colour-choice selected white"
-              type="button" data-value="#FFFFFF"
-              aria-label="White pants"></button>
-      <button class="colour-choice black"
-              type="button" data-value="#222222"
-              aria-label="Black pants"></button>
-    </div>
-
-    <p class="locked-message">
-      🔒 MORE COLOURS UNLOCK AS YOU COMPLETE QUESTS!
-    </p>
-  </div>
-
-  <!-- STEP 4: HAT -->
-  <div class="creator-step" data-step="3">
-    <h2>CHOOSE YOUR HAT</h2>
-
-    <div class="choice-grid">
-      <button class="choice selected" type="button"
-              data-category="hat" data-value="top">
-        🎩 TOP HAT
-      </button>
-      <button class="choice" type="button"
-              data-category="hat" data-value="cap">
-        🧢 CAP
-      </button>
-    </div>
-
-    <h3>CHOOSE A COLOUR</h3>
-    <div class="colour-choices" data-category="hatColor">
-      <button class="colour-choice selected white"
-              type="button" data-value="#FFFFFF"
-              aria-label="White hat"></button>
-      <button class="colour-choice black"
-              type="button" data-value="#222222"
-              aria-label="Black hat"></button>
-    </div>
-
-    <p class="locked-message">
-      🔒 MORE COLOURS UNLOCK AS YOU COMPLETE QUESTS!
-    </p>
-  </div>
-
-  <!-- STEP 5: NAME -->
-  <div class="creator-step" data-step="4">
-    <h2>NAME YOUR CHARACTER</h2>
-
-    <label for="player-name">PLAYER NAME</label>
-    <input id="player-name" type="text"
-           maxlength="20"
-           placeholder="ENTER NAME...">
-
-    <p>Ready to begin your adventure?</p>
-  </div>
-
-  <div class="step-navigation">
-    <button id="back-button" type="button" disabled>
-      ◀ BACK
-    </button>
-    <button id="next-button" type="button">
-      NEXT ▶
-    </button>
-  </div>
-
-  <p id="error-message" role="alert"></p>
-
-</section>
+    </section>
 
 
 
-</main>
+    <!-- ======================================
+         CUSTOMISATION CONTROL PANEL
+    ====================================== -->
 
-<footer>
-  ✦ EVERY GREAT ADVENTURE STARTS WITH A CHARACTER ✦
-</footer>
+    <section class="creator-remote">
+
+      <h1>CREATE PLAYER</h1>
+
+
+      <!-- PROGRESS BAR -->
+
+      <div class="step-progress">
+
+        <span id="step-label">
+          STEP 1 OF 4
+        </span>
+
+        <div class="progress-track">
+          <div id="progress-fill" style="width:25%"></div>
+        </div>
+
+      </div>
+
+
+
+      <!-- ======================================
+           STEP 1: CHARACTER
+      ====================================== -->
+
+      <div class="creator-step active-step" data-step="0">
+
+        <h2>CHOOSE YOUR CHARACTER</h2>
+
+        <div class="choice-grid three">
+
+          <button
+            class="choice selected"
+            type="button"
+            data-category="gender"
+            data-value="male"
+            aria-pressed="true">
+            MALE
+          </button>
+
+          <button
+            class="choice"
+            type="button"
+            data-category="gender"
+            data-value="female"
+            aria-pressed="false">
+            FEMALE
+          </button>
+
+          <button
+            class="choice"
+            type="button"
+            data-category="gender"
+            data-value="nonbinary"
+            aria-pressed="false">
+            NON-BINARY
+          </button>
+
+        </div>
+
+        <p class="hint">
+          You can customise your outfit and hairstyle next!
+        </p>
+
+      </div>
+
+
+
+      <!-- ======================================
+           STEP 2: TOP AND PANTS
+      ====================================== -->
+
+      <div class="creator-step" data-step="1">
+
+        <h2>CHOOSE YOUR OUTFIT</h2>
+
+
+        <!-- TOP STYLE -->
+
+        <h3>01 / TOP STYLE</h3>
+
+        <div class="choice-grid">
+
+          <button
+            class="choice selected"
+            type="button"
+            data-category="top"
+            data-value="tshirt"
+            aria-pressed="true">
+            T-SHIRT
+          </button>
+
+          <button
+            class="choice"
+            type="button"
+            data-category="top"
+            data-value="hoodie"
+            aria-pressed="false">
+            HOODIE
+          </button>
+
+        </div>
+
+
+        <!-- TOP COLOUR -->
+
+        <h3>TOP COLOUR</h3>
+
+        <div class="colour-choices" data-category="topColor">
+
+          <button
+            class="colour-choice white selected"
+            type="button"
+            data-value="#FFFFFF"
+            aria-label="White top"
+            aria-pressed="true">
+          </button>
+
+          <button
+            class="colour-choice black"
+            type="button"
+            data-value="#222222"
+            aria-label="Black top"
+            aria-pressed="false">
+          </button>
+
+        </div>
+
+
+        <!-- PANTS STYLE -->
+
+        <h3>02 / PANTS STYLE</h3>
+
+        <div class="choice-grid">
+
+          <button
+            class="choice selected"
+            type="button"
+            data-category="pants"
+            data-value="jeans"
+            aria-pressed="true">
+            JEANS
+          </button>
+
+          <button
+            class="choice"
+            type="button"
+            data-category="pants"
+            data-value="coral"
+            aria-pressed="false">
+            TROUSERS
+          </button>
+
+        </div>
+
+
+        <!-- PANTS COLOUR -->
+
+        <h3>PANTS COLOUR</h3>
+
+        <div class="colour-choices" data-category="pantsColor">
+
+          <button
+            class="colour-choice white selected"
+            type="button"
+            data-value="#FFFFFF"
+            aria-label="White pants"
+            aria-pressed="true">
+          </button>
+
+          <button
+            class="colour-choice black"
+            type="button"
+            data-value="#222222"
+            aria-label="Black pants"
+            aria-pressed="false">
+          </button>
+
+        </div>
+
+
+        <p class="locked-message">
+          🔒 MORE OUTFITS AND COLOURS UNLOCK AS YOU COMPLETE QUESTS!
+        </p>
+
+      </div>
+
+
+
+      <!-- ======================================
+           STEP 3: HAIR AND HAT
+      ====================================== -->
+
+      <div class="creator-step" data-step="2">
+
+        <h2>HAIR & ACCESSORIES</h2>
+
+
+        <!-- HAIRSTYLE -->
+
+        <h3>01 / CHOOSE YOUR HAIR</h3>
+
+        <div class="choice-grid">
+
+          <button
+            class="choice selected"
+            type="button"
+            data-category="hair"
+            data-value="short"
+            aria-pressed="true">
+            SHORT HAIR
+          </button>
+
+          <button
+            class="choice"
+            type="button"
+            data-category="hair"
+            data-value="long"
+            aria-pressed="false">
+            LONG HAIR
+          </button>
+
+        </div>
+
+
+        <!-- HAIR COLOUR -->
+
+        <h3>HAIR COLOUR</h3>
+
+        <div class="colour-choices" data-category="hairColor">
+
+          <button
+            class="colour-choice black selected"
+            type="button"
+            data-value="#222222"
+            aria-label="Black hair"
+            aria-pressed="true">
+          </button>
+
+          <button
+            class="colour-choice pink"
+            type="button"
+            data-value="#F28CB7"
+            aria-label="Pink hair"
+            aria-pressed="false">
+          </button>
+
+        </div>
+
+
+        <!-- HAT STYLE -->
+
+        <h3>02 / CHOOSE YOUR HAT</h3>
+
+        <div class="choice-grid three">
+
+          <button
+            class="choice selected"
+            type="button"
+            data-category="hat"
+            data-value="none"
+            aria-pressed="true">
+            NO HAT
+          </button>
+
+          <button
+            class="choice"
+            type="button"
+            data-category="hat"
+            data-value="top"
+            aria-pressed="false">
+            TOP HAT
+          </button>
+
+          <button
+            class="choice"
+            type="button"
+            data-category="hat"
+            data-value="cap"
+            aria-pressed="false">
+            CAP
+          </button>
+
+        </div>
+
+
+        <!-- HAT COLOUR -->
+
+        <h3>HAT COLOUR</h3>
+
+        <div class="colour-choices" data-category="hatColor">
+
+          <button
+            class="colour-choice white selected"
+            type="button"
+            data-value="#FFFFFF"
+            aria-label="White hat"
+            aria-pressed="true">
+          </button>
+
+          <button
+            class="colour-choice black"
+            type="button"
+            data-value="#222222"
+            aria-label="Black hat"
+            aria-pressed="false">
+          </button>
+
+        </div>
+
+
+        <p class="locked-message">
+          🔒 MORE HAIRSTYLES, COLOURS AND HATS UNLOCK AS YOU COMPLETE QUESTS!
+        </p>
+
+      </div>
+
+
+
+      <!-- ======================================
+           STEP 4: NAME YOUR CHARACTER
+      ====================================== -->
+
+      <div class="creator-step" data-step="3">
+
+        <h2>NAME YOUR CHARACTER</h2>
+
+        <label for="player-name">
+          PLAYER NAME
+        </label>
+
+        <input
+          id="player-name"
+          type="text"
+          maxlength="20"
+          placeholder="ENTER NAME..."
+          autocomplete="nickname"
+        >
+
+        <p class="hint">
+          Your character is ready. Let's begin your adventure!
+        </p>
+
+      </div>
+
+
+
+      <!-- ======================================
+           NAVIGATION BUTTONS
+      ====================================== -->
+
+      <div class="step-navigation">
+
+        <button
+          id="back-button"
+          type="button"
+          disabled>
+          ◀ BACK
+        </button>
+
+        <button
+          id="next-button"
+          type="button">
+          NEXT ▶
+        </button>
+
+      </div>
+
+      <p
+        id="error-message"
+        class="error-message"
+        role="alert">
+      </p>
+
+    </section>
+
+  </main>
+
+
+  <footer>
+    ✦ EVERY GREAT ADVENTURE STARTS WITH A CHARACTER ✦
+  </footer>
 
 </body>
 </html>

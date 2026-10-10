@@ -2,19 +2,30 @@
 const player = {
   name: "",
   gender: "male",
+
   top: "tshirt",
   pants: "jeans",
-  hat: "top",
+  hair: "short",
+  hat: "none",
+
   topColor: "#FFFFFF",
   pantsColor: "#FFFFFF",
+  hairColor: "#222222",
   hatColor: "#FFFFFF",
+
   xp: 0,
   level: 1,
   completedMilestones: [],
+
   unlockedItems: [
-    "tshirt", "hoodie",
-    "jeans", "coral",
-    "top", "cap"
+    "tshirt",
+    "hoodie",
+    "jeans",
+    "coral",
+    "short",
+    "long",
+    "top",
+    "cap"
   ]
 };
 
@@ -30,16 +41,19 @@ const errorMessage = document.getElementById("error-message");
 const clothingGroups = {
   top: ["tshirt", "hoodie"],
   pants: ["jeans", "coral"],
+  hair: ["short", "long"],
   hat: ["top", "cap"]
 };
 
 const colourClasses = {
   topColor: ".avatar-top-fill",
   pantsColor: ".avatar-pants-fill",
+  hairColor: ".avatar-hair-fill",
   hatColor: ".avatar-hat-fill"
 };
 
 function updateAvatar() {
+  // Show only the selected clothing styles.
   for (const [category, options] of Object.entries(clothingGroups)) {
     options.forEach(value => {
       const element = document.getElementById(`${category}-${value}`);
@@ -53,6 +67,14 @@ function updateAvatar() {
     });
   }
 
+  // Show the matching fringe.
+  const shortFringe = document.getElementById("hair-short-fringe");
+  const longFringe = document.getElementById("hair-long-fringe");
+
+  shortFringe.classList.toggle("hidden", player.hair !== "short");
+  longFringe.classList.toggle("hidden", player.hair !== "long");
+
+  // Apply selected colours.
   for (const [category, selector] of Object.entries(colourClasses)) {
     document.querySelectorAll(selector).forEach(shape => {
       shape.setAttribute("fill", player[category]);
@@ -81,6 +103,7 @@ function showStep() {
   errorMessage.textContent = "";
 }
 
+// Handle style and gender choices.
 document.querySelectorAll(".choice").forEach(button => {
   button.addEventListener("click", () => {
     const category = button.dataset.category;
@@ -88,17 +111,37 @@ document.querySelectorAll(".choice").forEach(button => {
 
     player[category] = value;
 
-    button.parentElement.querySelectorAll(".choice")
-      .forEach(choice => {
-        const selected = choice === button;
-        choice.classList.toggle("selected", selected);
-        choice.setAttribute("aria-pressed", String(selected));
+    // Starting hairstyle changes with character choice.
+    if (category === "gender") {
+      if (value === "female") {
+        player.hair = "long";
+      } else {
+        player.hair = "short";
+      }
+
+      // Update selected hairstyle button.
+      document.querySelectorAll(
+        '.choice[data-category="hair"]'
+      ).forEach(hairButton => {
+        const selected = hairButton.dataset.value === player.hair;
+        hairButton.classList.toggle("selected", selected);
+        hairButton.setAttribute("aria-pressed", String(selected));
       });
+    }
+
+    // Update selected state in the current group.
+    button.parentElement.querySelectorAll(".choice").forEach(choice => {
+      const selected = choice === button;
+
+      choice.classList.toggle("selected", selected);
+      choice.setAttribute("aria-pressed", String(selected));
+    });
 
     updateAvatar();
   });
 });
 
+// Handle colour selection.
 document.querySelectorAll(".colour-choices").forEach(group => {
   group.querySelectorAll(".colour-choice").forEach(button => {
     button.addEventListener("click", () => {
@@ -106,23 +149,26 @@ document.querySelectorAll(".colour-choices").forEach(group => {
 
       player[category] = button.dataset.value;
 
-      group.querySelectorAll(".colour-choice")
-        .forEach(choice => {
-          const selected = choice === button;
-          choice.classList.toggle("selected", selected);
-          choice.setAttribute("aria-pressed", String(selected));
-        });
+      group.querySelectorAll(".colour-choice").forEach(choice => {
+        const selected = choice === button;
+
+        choice.classList.toggle("selected", selected);
+        choice.setAttribute("aria-pressed", String(selected));
+      });
 
       updateAvatar();
     });
   });
 });
 
+// Live player-name preview.
 nameInput.addEventListener("input", () => {
   player.name = nameInput.value.trim();
   previewName.textContent = player.name || "PLAYER ONE";
+  errorMessage.textContent = "";
 });
 
+// Back button.
 backButton.addEventListener("click", () => {
   if (currentStep > 0) {
     currentStep--;
@@ -130,6 +176,7 @@ backButton.addEventListener("click", () => {
   }
 });
 
+// Next button / Create player.
 nextButton.addEventListener("click", () => {
   if (currentStep < steps.length - 1) {
     currentStep++;
@@ -137,15 +184,20 @@ nextButton.addEventListener("click", () => {
     return;
   }
 
+  player.name = nameInput.value.trim();
+
   if (!player.name) {
     errorMessage.textContent = "ENTER A PLAYER NAME FIRST!";
     nameInput.focus();
     return;
   }
 
-  localStorage.setItem("roadmapPlayer", JSON.stringify(player));
+  localStorage.setItem(
+    "roadmapPlayer",
+    JSON.stringify(player)
+  );
 
-  window.location.href = "roadmap.html";
+  window.location.href = "roadmapPage.html";
 });
 
 updateAvatar();
