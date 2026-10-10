@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>ROADMAP | Build Your Adventure</title>
+	<link rel="stylesheet" href="homepage.css">
+	<style>
+		.roadmap-main { width: min(1300px, 92%); margin: 0 auto; padding: 35px 0 75px; }
+		.roadmap-main > h1 { margin-bottom: 4px; color: var(--brown); font-size: clamp(22px, 3vw, 34px); text-align: center; text-shadow: 3px 3px 0 var(--shadow); }
+		.intro { color: var(--brown); text-align: center; }
+		.layout { display: grid; grid-template-columns: minmax(0, 900px); justify-content: center; gap: 30px; align-items: start; }
+		.card { width: 100%; padding: 26px; border: 6px solid var(--dark); background: var(--paper); box-shadow: 7px 7px 0 var(--brown); }
+		.card h2, #roadmap-title { color: var(--brown); font-size: 13px; line-height: 2; }
+		#request-title, #request-form { text-align: center; }
+		.field { margin-bottom: 22px; }
+		.field > label { display: block; margin-bottom: 7px; font-weight: 700; text-align: center; }
+		input, textarea { width: 100%; padding: 10px 12px; border: 4px solid var(--dark); border-radius: 0; background: #fff9e8; color: var(--dark); font: inherit; text-align: center; }
+		input:focus, textarea:focus, button:focus-visible { outline: 4px solid var(--terracotta); outline-offset: 3px; }
+		textarea { min-height: 140px; resize: vertical; }
+		.key-row { display: flex; justify-content: center; gap: 10px; }
+		#submit-button { display: block; margin: 4px auto 0; }
+		button { cursor: pointer; font-family: 'Press Start 2P', monospace; }
+		button:disabled { cursor: not-allowed; opacity: .58; }
+		.submit, .secondary { padding: 13px 15px; border: 4px solid var(--dark); border-radius: 0; background: var(--mint); color: var(--dark); box-shadow: 4px 4px 0 var(--brown); font-size: 9px; line-height: 1.8; }
+		.submit:hover:not(:disabled), .secondary:hover:not(:disabled) { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--brown); }
+		.secondary { flex: 0 0 auto; background: var(--mustard); }
+		.hint { margin: 6px 0 10px; color: var(--brown); font-size: 20px; text-align: center; }
+		.output-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+		.output-head h2 { margin: 0; }
+		#status { color: var(--brown); }
+		#status.success { color: #426F4C; }
+		#status.error { color: #9A3F37; }
+		#roadmap-title { margin-top: 24px; font-size: 16px; overflow-wrap: anywhere; }
+		.timeline { list-style: none; display: flex; align-items: flex-start; gap: 24px; overflow-x: auto; margin: 18px 0 0; padding: 60px 8px 20px; position: relative; scroll-snap-type: x mandatory; }
+		.timeline-track { position: absolute; z-index: 0; top: 73px; left: 34px; height: 7px; min-width: 0; padding: 0; border: 3px solid var(--dark); background: var(--shadow); pointer-events: none; }
+		.timeline-fill { display: block; width: 0; height: 100%; background: var(--mint); transition: width .25s ease; }
+		.timeline-smiley { position: absolute; top: -43px; left: 0; width: 24px; height: 24px; margin-left: -12px; font-size: 24px; line-height: 24px; text-align: center; transition: left 1.8s cubic-bezier(.2,.8,.2,1); }
+		.timeline-smiley.is-walking { animation: smiley-walk .55s ease-in-out infinite alternate; }
+		@keyframes smiley-walk { to { transform: translateY(-4px) rotate(12deg); } }
+		.timeline-item { position: relative; z-index: 1; flex: 0 0 min(240px, 70vw); display: flex; flex-direction: column; gap: 12px; align-items: stretch; scroll-snap-align: start; }
+		.timeline-item::before { content: "✦"; position: relative; left: 12px; top: 0; width: 28px; height: 28px; display: grid; place-items: center; border: 3px solid var(--dark); background: var(--mustard); color: var(--dark); box-shadow: 3px 3px 0 var(--brown); }
+		.milestone-card { width: 100%; min-height: 112px; padding: 16px; border: 4px solid var(--dark); border-radius: 0; background: var(--mint); color: var(--dark); box-shadow: 5px 5px 0 var(--brown); text-align: left; transition: transform .15s ease, box-shadow .15s ease; }
+		.timeline-item:nth-of-type(3n) .milestone-card { background: var(--mustard); }
+		.timeline-item:nth-of-type(4n) .milestone-card { background: var(--coral); }
+		.milestone-card:hover { transform: translate(2px, 2px); box-shadow: 3px 3px 0 var(--brown); }
+		.milestone-card strong, .milestone-card span { display: block; }
+		.milestone-card strong { font-family: 'Press Start 2P', monospace; font-size: 9px; line-height: 1.8; overflow-wrap: anywhere; }
+		.milestone-step { margin-bottom: 6px; color: var(--brown); font-size: 18px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+		.milestone-due { margin-top: 8px; color: var(--brown); font-size: 19px; }
+		.completion { display: flex; align-items: center; gap: 8px; align-self: flex-start; margin: 0; padding: 7px 9px; border: 3px solid var(--dark); background: var(--mustard); color: var(--dark); box-shadow: 3px 3px 0 var(--brown); font-size: 19px; white-space: nowrap; }
+		.completion input { width: 18px; height: 18px; margin: 0; padding: 0; accent-color: var(--green); }
+		.timeline-item.is-done::before { content: "✓"; background: var(--green); color: var(--paper); }
+		.timeline-item.is-done .milestone-card { border-color: var(--dark); background: #C8D9B8; }
+		.timeline-item.is-done .milestone-card strong { color: #426F4C; text-decoration: line-through; }
+		.timeline-item.is-current::before { background: var(--terracotta); color: var(--paper); box-shadow: 3px 3px 0 var(--dark); }
+		dialog { width: min(460px, calc(100% - 32px)); padding: 0; border: 6px solid var(--dark); border-radius: 0; background: var(--paper); color: var(--dark); box-shadow: 8px 8px 0 var(--brown); }
+		dialog::backdrop { background: #211B18C9; }
+		.dialog-content { position: relative; padding: 28px; }
+		.dialog-close { position: absolute; top: 12px; right: 12px; padding: 7px 10px; border: 3px solid var(--dark); background: var(--mustard); color: var(--dark); font-size: 10px; }
+		#dialog-title { margin: 22px 0 8px; color: var(--brown); font-size: 12px; overflow-wrap: anywhere; }
+		#dialog-due { color: var(--terracotta); font-weight: 700; }
+		#dialog-description { white-space: pre-wrap; }
+		@media (max-width: 760px) { .roadmap-main { width: 92%; padding-top: 24px; } .layout { grid-template-columns: minmax(0, 1fr); gap: 24px; } }
+		@media (max-width: 430px) { .card { padding: 18px; } .timeline-item { flex-basis: min(220px, 76vw); } .key-row { align-items: stretch; } .submit, .secondary { font-size: 8px; } }
+		@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; } }
+	</style>
+</head>
+<body>
+	<div class="website">
+	<div class="arcade-label">
+		<span>✦ ROADMAP ARCADE ✦</span>
+		<span>BUILD YOUR NEXT QUEST</span>
+	</div>
+	<main class="roadmap-main">
+		<h1>Create a Roadmap</h1>
+		<p class="intro">Enter your goal</p>
+		<div class="layout">
+			<section class="card" aria-labelledby="request-title">
+				<h2 id="request-title">Request</h2>
+				<form id="request-form">
+					<div class="field">
+						<label for="api-key">Gemini API key</label>
+						<p class="hint">Create a key in Google AI Studio. Do not share it.</p>
+						<div class="key-row">
+							<input id="api-key" type="password" autocomplete="off" placeholder="Enter API key" required>
+							<button id="toggle-key" class="secondary" type="button">Show</button>
+						</div>
+					</div>
+					<div class="field">
+						<label for="prompt">What do you want to achieve?</label>
+						<textarea id="prompt" placeholder="I want to..." required></textarea>
+					</div>
+					<div class="field">
+						<label for="due-date">Target due date</label>
+						<input id="due-date" type="date" required>
+					</div>
+					<button class="submit" id="submit-button" type="submit">Generate Roadmap</button>
+				</form>
+			</section>
+
+			<section class="card" aria-labelledby="response-title">
+				<div class="output-head">
+					<h2 id="response-title">Response</h2>
+				</div>
+				<p id="status" role="status" aria-live="polite">Your response will appear here.</p>
+				<h3 id="roadmap-title"></h3>
+				<ol id="output" class="timeline" aria-label="Roadmap timeline">
+					<li id="timeline-track" class="timeline-track" role="progressbar" aria-label="Milestone progress" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0"><span id="timeline-fill" class="timeline-fill"></span><span id="timeline-smiley" class="timeline-smiley" role="img" aria-label="Smiley at the start of the timeline" hidden>🙂</span></li>
+				</ol>
+			</section>
+		</div>
+	</main>
+	</div>
+	<dialog id="milestone-dialog" aria-labelledby="dialog-title">
+		<div class="dialog-content">
+			<button class="dialog-close" id="close-dialog" type="button" aria-label="Close details">×</button>
+			<p id="dialog-due"></p>
+			<h2 id="dialog-title"></h2>
+			<p id="dialog-description"></p>
+		</div>
+	</dialog>
+	<script>
+		const form = document.querySelector('#request-form');
+		const keyInput = document.querySelector('#api-key');
+		const promptInput = document.querySelector('#prompt');
+		const dueDateInput = document.querySelector('#due-date');
+		const submitButton = document.querySelector('#submit-button');
+		const output = document.querySelector('#output');
+		const roadmapTitle = document.querySelector('#roadmap-title');
+		const status = document.querySelector('#status');
+		const milestoneDialog = document.querySelector('#milestone-dialog');
+		const dialogTitle = document.querySelector('#dialog-title');
+		const dialogDue = document.querySelector('#dialog-due');
+		const dialogDescription = document.querySelector('#dialog-description');
+		const timelineTrack = document.querySelector('#timeline-track');
+		const timelineFill = document.querySelector('#timeline-fill');
+		const timelineSmiley = document.querySelector('#timeline-smiley');
+		const ROADMAP_STORAGE_KEY = 'roadmap-generated-v1';
+		let generatedRoadmap = null;
+		let smileyWalkTimer;
+		const schema = {
+			type: 'OBJECT',
+			properties: {
+				title: {
+					type: 'STRING',
+					description: 'Name of the roadmap.'
+				},
+				milestones: {
+					type: 'ARRAY',
+					items: {
+						type: 'OBJECT',
+						properties: {
+							title: {
+								type: 'STRING',
+								description: 'Title of the milestone.'
+							},
+							description: {
+								type: 'STRING',
+								description: 'What needs to be done for this milestone.'
+							},
+                            due: {
+                                type: 'STRING', 
+                                description: 'The due date of the milestone in DD-MM-YYYY format'
+                            },
+							done: {
+								type: 'BOOLEAN',
+								description: 'Whether the milestone is done or not done.'
+							}
+						},
+						required: ['title', 'description', 'due', 'done']
+					}
+				}
+			},
+			required: ['title', 'milestones']
+		};
+
+		document.querySelector('#toggle-key').addEventListener('click', (event) => {
+			const reveal = keyInput.type === 'password';
+			keyInput.type = reveal ? 'text' : 'password';
+			event.currentTarget.textContent = reveal ? 'Hide' : 'Show';
+		});
+
+		document.querySelector('#close-dialog').addEventListener('click', () => milestoneDialog.close());
+		milestoneDialog.addEventListener('click', (event) => {
+			if (event.target === milestoneDialog) milestoneDialog.close();
+		});
+
+		form.addEventListener('submit', async (event) => {
+			event.preventDefault();
+
+			submitButton.disabled = true;
+			generatedRoadmap = null;
+			clearSavedRoadmap();
+			submitButton.textContent = 'Generating…';
+			status.textContent = 'Requesting structured output from Gemini…';
+			status.className = '';
+			roadmapTitle.textContent = '';
+			output.replaceChildren(timelineTrack);
+			timelineSmiley.hidden = true;
+			timelineFill.style.width = '0';
+
+			try {
+				const [year, month, day] = dueDateInput.value.split('-');
+				const dueDate = `${day}-${month}-${year}`;
+				const roadmapPrompt = `${promptInput.value.trim()}\n\nTarget completion date: ${dueDate}. Create realistic milestones that lead to this date, and provide each milestone's due date in DD-MM-YYYY format.`;
+				const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=' + encodeURIComponent(keyInput.value.trim());
+				const response = await fetch(url, {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({
+						contents: [{ role: 'user', parts: [{ text: roadmapPrompt }] }],
+						generationConfig: { responseMimeType: 'application/json', responseJsonSchema: schema, thinkingConfig: {thinkingLevel: 'minimal'} }
+					})
+				});
+				const result = await response.json();
+				if (!response.ok) throw new Error(result.error?.message || `Gemini request failed (${response.status}).`);
+				const text = result.candidates?.[0]?.content?.parts?.map((part) => part.text || '').join('');
+				if (!text) throw new Error('Gemini returned no response content. Check the prompt and schema, then try again.');
+
+				const data = JSON.parse(text);
+				if (!Array.isArray(data.milestones)) {
+					throw new Error('The generated roadmap did not include a milestones list.');
+				}
+
+				generatedRoadmap = data;
+				saveRoadmap();
+				roadmapTitle.textContent = data.title || 'Roadmap';
+				renderTimeline();
+				status.textContent = 'Your roadmap is ready. Open a milestone to see the details.';
+				status.className = 'success';
+			} catch (error) {
+				roadmapTitle.textContent = '';
+				output.replaceChildren(timelineTrack);
+				status.textContent = error instanceof SyntaxError ? 'Gemini returned content that was not valid JSON.' : (error.message || 'The request failed.');
+				status.className = 'error';
+			} finally {
+				submitButton.disabled = false;
+				submitButton.textContent = 'Generate Roadmap';
+			}
+		});
+
+		function renderTimeline() {
+			output.replaceChildren(timelineTrack);
+			for (const [index, milestone] of generatedRoadmap.milestones.entries()) {
+				const item = document.createElement('li');
+				item.className = 'timeline-item';
+				if (milestone.done) item.classList.add('is-done');
+				item.dataset.milestoneIndex = index;
+
+				const detailsButton = document.createElement('button');
+				detailsButton.type = 'button';
+				detailsButton.className = 'milestone-card';
+				const step = document.createElement('span');
+				step.className = 'milestone-step';
+				step.textContent = `Milestone ${String(index + 1).padStart(2, '0')}`;
+				const title = document.createElement('strong');
+				title.textContent = milestone.title || 'Untitled milestone';
+				detailsButton.append(step, title);
+				if (milestone.due) {
+					const due = document.createElement('span');
+					due.className = 'milestone-due';
+					due.textContent = `Target date · ${milestone.due}`;
+					detailsButton.appendChild(due);
+				}
+				detailsButton.addEventListener('click', () => {
+					dialogTitle.textContent = milestone.title || 'Untitled milestone';
+					dialogDue.textContent = milestone.due ? `Target date · ${milestone.due}` : 'No target date set';
+					dialogDescription.textContent = milestone.description || 'No extra details were provided for this milestone.';
+					milestoneDialog.showModal();
+				});
+
+				const completionLabel = document.createElement('label');
+				completionLabel.className = 'completion';
+				const checkbox = document.createElement('input');
+				checkbox.type = 'checkbox';
+				checkbox.checked = Boolean(milestone.done);
+				checkbox.disabled = true;
+				checkbox.setAttribute('aria-label', `Mark ${milestone.title || 'milestone'} as done`);
+				checkbox.addEventListener('change', () => {
+					milestone.done = checkbox.checked;
+					item.classList.toggle('is-done', checkbox.checked);
+					saveRoadmap();
+					updateTimelineProgress();
+				});
+				const completionText = document.createElement('span');
+				completionText.textContent = 'Done';
+				completionLabel.append(checkbox, completionText);
+				item.append(detailsButton, completionLabel);
+				output.appendChild(item);
+			}
+			updateTimelineProgress();
+		}
+
+		function updateTimelineProgress() {
+			const milestones = generatedRoadmap?.milestones || [];
+			const items = [...output.querySelectorAll('.timeline-item')];
+			const doneCount = milestones.filter((milestone) => milestone.done).length;
+			const currentIndex = milestones.findIndex((milestone) => !milestone.done);
+			const lastCompletedIndex = milestones.reduce((lastDone, milestone, index) => milestone.done ? index : lastDone, -1);
+			const lastItem = items[items.length - 1];
+
+			if (items.length && lastItem) {
+				const firstCenter = items[0].offsetLeft + 26;
+				const lastCenter = lastItem.offsetLeft + 26;
+				timelineTrack.style.left = `${firstCenter}px`;
+				timelineTrack.style.width = `${Math.max(0, lastCenter - firstCenter)}px`;
+			} else {
+				timelineTrack.style.width = '0px';
+			}
+			if (items.length) {
+				const firstCenter = items[0].offsetLeft + 26;
+				const smileyIndex = lastCompletedIndex < 0 ? 0 : lastCompletedIndex;
+				const smileyItem = items[smileyIndex] || items[0];
+				timelineSmiley.style.left = `${smileyItem.offsetLeft + 26 - firstCenter}px`;
+				timelineSmiley.setAttribute('aria-label', lastCompletedIndex < 0
+					? 'Smiley at the start of the timeline'
+					: `Smiley at completed milestone ${lastCompletedIndex + 1}`);
+				timelineSmiley.hidden = false;
+				timelineSmiley.classList.remove('is-walking');
+				void timelineSmiley.offsetWidth;
+				timelineSmiley.classList.add('is-walking');
+				clearTimeout(smileyWalkTimer);
+				smileyWalkTimer = setTimeout(() => timelineSmiley.classList.remove('is-walking'), 800);
+			} else {
+				timelineSmiley.hidden = true;
+			}
+
+			const progress = milestones.length <= 1
+				? (doneCount ? 1 : 0)
+				: doneCount === 0 ? 0 : doneCount === milestones.length ? 1 : (doneCount - 1) / (milestones.length - 1);
+			timelineFill.style.width = `${progress * 100}%`;
+			timelineTrack.setAttribute('aria-valuemax', milestones.length);
+			timelineTrack.setAttribute('aria-valuenow', doneCount);
+			for (const [index, item] of items.entries()) {
+				item.classList.toggle('is-current', index === currentIndex);
+				item.querySelector('input[type="checkbox"]').disabled = index !== currentIndex;
+			}
+		}
+
+		function saveRoadmap() {
+			try {
+				localStorage.setItem(ROADMAP_STORAGE_KEY, JSON.stringify(generatedRoadmap));
+			} catch (error) {
+				console.warn('Could not save the roadmap in this browser.', error);
+			}
+		}
+
+		function clearSavedRoadmap() {
+			try {
+				localStorage.removeItem(ROADMAP_STORAGE_KEY);
+			} catch (error) {
+				console.warn('Could not clear the saved roadmap from this browser.', error);
+			}
+		}
+
+		function restoreRoadmap() {
+			try {
+				const saved = JSON.parse(localStorage.getItem(ROADMAP_STORAGE_KEY));
+				if (!saved || !Array.isArray(saved.milestones)) return;
+				generatedRoadmap = saved;
+				roadmapTitle.textContent = saved.title || 'Roadmap';
+				renderTimeline();
+				status.textContent = 'Saved roadmap restored. Your progress is ready to continue.';
+				status.className = 'success';
+			} catch (error) {
+				console.warn('Could not restore the saved roadmap.', error);
+			}
+		}
+
+		restoreRoadmap();
+
+	</script>
+</body>
+</html>
