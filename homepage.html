@@ -1,0 +1,204 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roadmap | Your Quest Begins</title>
+  <link rel="stylesheet" href="homepage.css">
+  <script src="homepage.js" defer></script>
+</head>
+<body>
+
+  <div class="game">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <a href="#" class="logo">✦ ROADMAP</a>
+
+      <nav>
+        <a href="#dashboard">Dashboard</a>
+        <a href="#quests">Quests</a>
+        <a href="#achievements">Achievements</a>
+      </nav>
+
+      <div class="player-pill">
+        <span>✧</span>
+        <span id="headerLevel">LVL 1</span>
+      </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero" id="dashboard">
+      <div class="hero-copy">
+        <div class="eyebrow">✦ YOUR ADVENTURE STARTS HERE ✦</div>
+
+        <h1>MAKE LIFE<br><em>YOUR GAME.</em></h1>
+
+        <p>
+          Big dreams are built one quest at a time.
+          Create your roadmap, complete challenges,
+          collect XP and level up your real life.
+        </p>
+
+        <div class="hero-actions">
+          <button class="primary-btn" id="startQuest">
+            START A QUEST <span>➜</span>
+          </button>
+          <a href="#quests" class="secondary-btn">
+            VIEW QUEST BOARD
+          </a>
+        </div>
+      </div>
+
+      <!-- PLAYER CARD -->
+      <div class="player-card">
+        <div class="card-top">
+          <span>PLAYER PROFILE</span>
+          <span class="status">● ONLINE</span>
+        </div>
+
+        <div class="avatar">✦</div>
+        <div class="player-name">THE ADVENTURER</div>
+        <div class="player-subtitle">Beginner Explorer</div>
+
+        <div class="level-row">
+          <strong id="levelText">LEVEL 01</strong>
+          <span id="xpText">0 / 100 XP</span>
+        </div>
+
+        <div class="xp-track">
+          <div class="xp-fill" id="xpFill"></div>
+        </div>
+
+        <div class="player-stats">
+          <div>
+            <strong id="completedStat">0</strong>
+            <span>QUESTS DONE</span>
+          </div>
+          <div>
+            <strong id="streakStat">0</strong>
+            <span>DAY STREAK</span>
+          </div>
+          <div>
+            <strong id="totalXpStat">0</strong>
+            <span>TOTAL XP</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GAME TICKER -->
+    <div class="ticker">
+      <span>✦ EVERY QUEST COUNTS</span>
+      <span>✧ GROW AT YOUR OWN PACE</span>
+      <span>✦ SMALL WINS, BIG ADVENTURES</span>
+      <span>✧ LEVEL UP YOUR LIFE</span>
+    </div>
+
+    <!-- QUEST SECTION -->
+    <section class="quests-section" id="quests">
+      <div class="section-heading">
+        <div>
+          <div class="eyebrow">YOUR NEXT ADVENTURE</div>
+          <h2>QUEST BOARD <span>✳</span></h2>
+          <p>Choose a mission. Earn XP. Keep moving forward.</p>
+        </div>
+
+        <button class="primary-btn" id="addQuest">
+          + NEW QUEST
+        </button>
+      </div>
+
+      <div class="quest-filters">
+        <button class="filter active" data-filter="all">ALL QUESTS</button>
+        <button class="filter" data-filter="active">IN PROGRESS</button>
+        <button class="filter" data-filter="completed">COMPLETED</button>
+      </div>
+
+      <div class="quest-grid" id="questGrid"></div>
+    </section>
+
+    <!-- ACHIEVEMENTS -->
+    <section class="achievements-section" id="achievements">
+      <div class="section-heading">
+        <div>
+          <div class="eyebrow">COLLECT YOUR WINS</div>
+          <h2>ACHIEVEMENTS <span>✦</span></h2>
+          <p>Milestones worth celebrating.</p>
+        </div>
+      </div>
+
+      <div class="achievement-grid">
+        <div class="achievement" id="badgeFirst">
+          <div class="badge-icon">★</div>
+          <h3>FIRST STEPS</h3>
+          <p>Complete your first quest</p>
+          <span class="unlock-status">LOCKED</span>
+        </div>
+
+        <div class="achievement" id="badgeFive">
+          <div class="badge-icon">✿</div>
+          <h3>ON A ROLL</h3>
+          <p>Complete five quests</p>
+          <span class="unlock-status">LOCKED</span>
+        </div>
+
+        <div class="achievement" id="badgeLevel">
+          <div class="badge-icon">✧</div>
+          <h3>LEVEL UP!</h3>
+          <p>Reach level three</p>
+          <span class="unlock-status">LOCKED</span>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <span>✦ ROADMAP</span>
+      <span>YOUR STORY IS STILL BEING WRITTEN.</span>
+      <span>MADE FOR THE JOURNEY ♡</span>
+    </footer>
+  </div>
+
+  <!-- NEW QUEST MODAL -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal">
+      <div class="modal-heading">
+        <h2>✦ NEW QUEST</h2>
+        <button id="closeModal" class="close-btn">×</button>
+      </div>
+
+      <p>Every great adventure starts somewhere.</p>
+
+      <form id="questForm">
+        <label for="questTitle">QUEST NAME</label>
+        <input id="questTitle" type="text"
+          placeholder="e.g. Finish my assignment"
+          maxlength="80" required>
+
+        <label for="questCategory">CATEGORY</label>
+        <select id="questCategory">
+          <option value="study">📚 Study & Learning</option>
+          <option value="health">🌿 Health & Wellness</option>
+          <option value="career">✦ Career & Goals</option>
+          <option value="personal">☀ Personal Growth</option>
+        </select>
+
+        <label for="questDifficulty">DIFFICULTY</label>
+        <select id="questDifficulty">
+          <option value="easy">Easy · 20 XP</option>
+          <option value="medium">Medium · 50 XP</option>
+          <option value="hard">Hard · 100 XP</option>
+        </select>
+
+        <button class="primary-btn form-submit" type="submit">
+          CREATE QUEST ➜
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+</body>
+</html>
