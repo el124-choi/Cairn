@@ -1,22 +1,54 @@
+
+"use strict";
+
+// ==========================================
+// STARLING | JOURNEY HUB
+// RETRO ARCADE GAME LOGIC
+// ==========================================
+
 const AVATAR_KEY = "starling-avatar-v1";
 const ROADMAP_KEY = "roadmap-generated-v1";
 const HUB_KEY = "starling-hub-v1";
 
 const $ = selector => document.querySelector(selector);
 
-// Sample roadmap used when no generated roadmap exists
+function load(key, fallback) {
+  try {
+    const value = JSON.parse(localStorage.getItem(key));
+    return value ?? fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function store(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (error) {
+    console.warn("Save failed:", key, error);
+  }
+}
+
+function clone(value) {
+  return JSON.parse(JSON.stringify(value));
+}
+
+// ==========================================
+// DEMO ROADMAP
+// ==========================================
+
 const demo = {
   title: "My University Journey",
   milestones: [
     {
       title: "Explore your course",
-      description: "Research course options and modules.",
+      description: "Research your course options and modules.",
       due: "15-10-2026",
       done: true
     },
     {
       title: "Build a starter project",
-      description: "Create a small project and share what you learned.",
+      description: "Create a project and share what you learned.",
       due: "22-10-2026",
       done: true
     },
@@ -41,107 +73,123 @@ const demo = {
   ]
 };
 
-// Default avatar and saved hub data
+// ==========================================
+// DEFAULT PLAYER
+// ==========================================
+
+const defaultAvatar = {
+  name: "Explorer",
+  gender: "female",
+  style: "feminine",
+  hair: "long",
+  hairColor: "#1c1720",
+  highlight: "#f39ac5",
+  top: "tshirt",
+  topColor: "#f5a58e",
+  pants: "jeans",
+  pantsColor: "#56799e",
+  hat: "none",
+  hatColor: "#f6d77a",
+  accessory: "none",
+  skinColor: "#c58b66"
+};
+
 const defaults = {
-  avatar: {
-    name: "Explorer",
-    style: "feminine",
-    hair: "long",
-    hairColor: "#1c1720",
-    highlight: "#f39ac5",
-    top: "tshirt",
-    topColor: "#f5a58e",
-    pants: "jeans",
-    pantsColor: "#56799e",
-    hat: "none",
-    hatColor: "#f6d77a",
-    accessory: "none"
-  },
+  avatar: clone(defaultAvatar),
   journal: [],
   activityDates: [],
   helpRequests: []
 };
 
-function load(key, fallback) {
-  try {
-    const value = JSON.parse(localStorage.getItem(key));
-    return value ?? fallback;
-  } catch {
-    return fallback;
-  }
-}
-
-// Connect to the existing roadmap
 let roadmap = load(ROADMAP_KEY, null);
 
 let demoMode = !roadmap ||
   !Array.isArray(roadmap.milestones);
 
 if (demoMode) {
-  roadmap = structuredClone(demo);
+  roadmap = clone(demo);
 }
 
 let hub = {
-  ...structuredClone(defaults),
+  ...clone(defaults),
   ...load(HUB_KEY, {})
 };
 
-function getSharedAvatar() {
+if (!Array.isArray(hub.journal)) {
+  hub.journal = [];
+}
+
+if (!Array.isArray(hub.activityDates)) {
+  hub.activityDates = [];
+}
+
+// ==========================================
+// AVATAR SYNCHRONISATION
+// ==========================================
+
+function getAvatar() {
+  const saved = load(AVATAR_KEY, null);
+  const oldPlayer = load("player", null);
+
+  const source = saved || oldPlayer || hub.avatar || {};
+
   return {
-    ...defaults.avatar,
-    ...load(AVATAR_KEY, hub.avatar)
+    ...defaultAvatar,
+    ...source,
+    style: source.style ||
+      (source.gender === "male"
+        ? "masculine"
+        : "feminine"),
+    hairColor: source.hairColor || "#1c1720",
+    highlight: source.highlight ||
+      source.secondaryHairColor || "#f39ac5"
   };
 }
 
-hub.avatar = getSharedAvatar();
+hub.avatar = getAvatar();
 
 function save() {
-  localStorage.setItem(HUB_KEY, JSON.stringify(hub));
+  store(HUB_KEY, hub);
 
   if (!demoMode) {
-    localStorage.setItem(
-      ROADMAP_KEY,
-      JSON.stringify(roadmap)
-    );
+    store(ROADMAP_KEY, roadmap);
   }
 }
 
+// ==========================================
 // XP AND LEVEL SYSTEM
+// ==========================================
 
-function count() {
+function completedCount() {
   return roadmap.milestones.filter(m => m.done).length;
 }
 
-function xp() {
-  return count() * 100 +
+function totalXP() {
+  return completedCount() * 100 +
     Math.min(hub.journal.length, 10) * 15;
 }
 
-function level() {
-  return Math.floor(xp() / 200) + 1;
+function playerLevel() {
+  return Math.floor(totalXP() / 200) + 1;
 }
 
-const unlocks = {
-  jacket: 2,
-  cargo: 3,
-  crown: 4,
-  star: 3
-};
-
-function next() {
+function nextQuestIndex() {
   return roadmap.milestones.findIndex(m => !m.done);
 }
 
-// DAILY STREAKS
+// ==========================================
+// DAILY STREAK
+// ==========================================
 
 function dateISO(date = new Date()) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+
+  return `${y}-${m}-${d}`;
 }
 
-function activity() {
+function recordActivity() {
   const today = dateISO();
 
   if (!hub.activityDates.includes(today)) {
@@ -151,14 +199,15 @@ function activity() {
   save();
 }
 
-function streak() {
-  let days = 0;
+function getStreak() {
   const dates = new Set(hub.activityDates);
   const date = new Date();
 
   if (!dates.has(dateISO(date))) {
     date.setDate(date.getDate() - 1);
   }
+
+  let days = 0;
 
   while (dates.has(dateISO(date))) {
     days++;
@@ -168,163 +217,123 @@ function streak() {
   return days;
 }
 
+// ==========================================
 // ACHIEVEMENTS
+// ==========================================
 
-function badges() {
+function getBadges() {
+  const completed = completedCount();
+
   return [
     {
-      icon: "🌱",
+      icon: "icon-star",
       name: "First Steps",
-      ok: count() >= 1
+      unlocked: completed >= 1
     },
     {
-      icon: "⚡",
+      icon: "icon-xp",
       name: "Quest Master",
-      ok: count() >= 3
+      unlocked: completed >= 3
     },
     {
-      icon: "🏆",
+      icon: "icon-trophy",
       name: "Roadmap Champion",
-      ok: roadmap.milestones.length > 0 &&
-          count() === roadmap.milestones.length
+      unlocked: roadmap.milestones.length > 0 &&
+        completed === roadmap.milestones.length
     },
     {
-      icon: "📓",
+      icon: "icon-journal",
       name: "Reflective Learner",
-      ok: hub.journal.length >= 1
+      unlocked: hub.journal.length >= 1
     },
     {
-      icon: "🔥",
+      icon: "icon-flag",
       name: "On a Roll",
-      ok: streak() >= 3
+      unlocked: getStreak() >= 3
     },
     {
-      icon: "⭐",
+      icon: "icon-xp",
       name: "Level 3 Explorer",
-      ok: level() >= 3
+      unlocked: playerLevel() >= 3
     }
   ];
 }
 
+// ==========================================
 // NOTIFICATIONS
+// ==========================================
+
+let toastTimer;
 
 function toast(message) {
   const element = $("#toast");
+  if (!element) return;
 
   element.textContent = message;
   element.style.display = "block";
 
-  clearTimeout(window.toastTimer);
+  clearTimeout(toastTimer);
 
-  window.toastTimer = setTimeout(() => {
+  toastTimer = setTimeout(() => {
     element.style.display = "none";
   }, 2800);
 }
 
-// MAIN DASHBOARD
+// ==========================================
+// PIXEL SVG HELPER
+// ==========================================
 
-function render() {
-  const total = roadmap.milestones.length;
-  const done = count();
-  const percentage = total
-    ? Math.round(done / total * 100)
-    : 0;
+function pixelIcon(id) {
+  const svg = document.createElementNS(
+    "http://www.w3.org/2000/svg",
+    "svg"
+  );
 
-  const index = next();
+  svg.setAttribute("viewBox", "0 0 32 32");
+  svg.setAttribute("aria-hidden", "true");
 
-  $("#progressPct").textContent = percentage + "%";
-  $("#progressFill").style.width = percentage + "%";
+  const use = document.createElementNS(
+    "http://www.w3.org/2000/svg",
+    "use"
+  );
 
-  $("#progressDescription").textContent =
-    `${done} of ${total} milestones complete`;
+  use.setAttribute("href", "#" + id);
+  svg.append(use);
 
-  $("#completedStat").textContent = done;
-  $("#totalStat").textContent = total;
-
-  $("#badgeStat").textContent =
-    badges().filter(b => b.ok).length;
-
-  $("#levelBadge").textContent = "LVL " + level();
-
-  const currentXP = xp() % 200;
-
-  $("#xpLabel").textContent = currentXP + " / 200 XP";
-  $("#xpFill").style.width =
-    (currentXP / 200 * 100) + "%";
-
-  $("#streak").textContent =
-    "🔥 " + streak() + " DAY STREAK";
-
-  $("#subtitle").textContent =
-    roadmap.title || "Build skills. Complete quests. Level up.";
-
-  $("#avatarName").textContent = hub.avatar.name;
-
-  $("#questNumber").textContent = index < 0
-    ? "✓ DONE"
-    : "#" + String(index + 1).padStart(2, "0");
-
-  const milestone = roadmap.milestones[index];
-
-  $("#nextQuestTitle").textContent =
-    milestone?.title || "All quests completed!";
-
-  $("#nextQuestDesc").textContent =
-    milestone?.description ||
-    "You finished your journey. Create a new roadmap for your next adventure.";
-
-  $("#nextQuestDue").textContent = milestone?.due
-    ? "TARGET: " + milestone.due
-    : "";
-
-  $("#completeQuest").disabled = index < 0;
-  $("#questHelp").disabled = index < 0;
-
-  // Build the mini roadmap
-  $("#journey").replaceChildren();
-
-  roadmap.milestones.forEach((m, i) => {
-    const card = document.createElement("div");
-
-    card.className = "quest " +
-      (m.done ? "done" : i === index ? "current" : "");
-
-    const icon = document.createElement("div");
-    icon.className = "dot";
-    icon.textContent = m.done
-      ? "✓"
-      : i === index ? "🚩" : "🔒";
-
-    const title = document.createElement("b");
-    title.textContent = m.title;
-
-    const due = document.createElement("small");
-    due.textContent = m.due || "No deadline";
-
-    card.append(icon, title, due);
-    $("#journey").append(card);
-  });
-
-  drawAvatar();
+  return svg;
 }
 
-// PIXEL AVATAR RENDERER
+// ==========================================
+// AVATAR RENDERER
+// ==========================================
 
-function rect(x, y, width, height, fill) {
+function rect(x, y, w, h, fill) {
   return `<rect x="${x}" y="${y}"
-    width="${width}" height="${height}"
+    width="${w}" height="${h}"
     fill="${fill}"/>`;
 }
 
+function safeColor(value, fallback) {
+  return typeof value === "string" &&
+    /^#[0-9a-fA-F]{3,8}$/.test(value)
+    ? value : fallback;
+}
+
 function drawAvatar() {
+  const target = $("#avatar");
+  if (!target) return;
+
   const a = hub.avatar;
 
-  let svg = "";
-
-  const skin = "#c58b66";
+  const skin = safeColor(a.skinColor, "#c58b66");
   const outline = "#342820";
-  const hair = a.hairColor;
-  const highlight = a.highlight;
+  const hair = safeColor(a.hairColor, "#1c1720");
+  const highlight = safeColor(a.highlight, "#f39ac5");
+  const top = safeColor(a.topColor, "#f5a58e");
+  const pants = safeColor(a.pantsColor, "#56799e");
+  const hat = safeColor(a.hatColor, "#f6d77a");
+
+  let svg = "";
 
   // Shoes
   svg += rect(63, 178, 23, 20, outline);
@@ -334,8 +343,8 @@ function drawAvatar() {
 
   // Trousers
   svg += rect(65, 126, 51, 54, outline);
-  svg += rect(69, 129, 20, 46, a.pantsColor);
-  svg += rect(92, 129, 20, 46, a.pantsColor);
+  svg += rect(69, 129, 20, 46, pants);
+  svg += rect(92, 129, 20, 46, pants);
 
   if (a.pants === "shorts") {
     svg += rect(68, 151, 21, 25, skin);
@@ -351,29 +360,31 @@ function drawAvatar() {
   svg += rect(45, 85, 17, 52, skin);
   svg += rect(120, 85, 17, 52, skin);
 
-  // Top
+  // Shirt
   svg += rect(57, 80, 68, 56, outline);
-  svg += rect(61, 84, 60, 47, a.topColor);
+  svg += rect(61, 84, 60, 47, top);
 
   if (a.top === "hoodie") {
     svg += rect(76, 84, 31, 12, outline);
-    svg += rect(80, 85, 23, 11, a.topColor);
+    svg += rect(80, 85, 23, 11, top);
     svg += rect(87, 106, 8, 20, "#fff4dd");
   }
 
   if (a.top === "jacket") {
     svg += rect(87, 84, 8, 47, "#fff4dd");
-    svg += rect(63, 84, 15, 45, "#594e6e");
-    svg += rect(105, 84, 15, 45, "#594e6e");
+    svg += rect(63, 84, 15, 45, top);
+    svg += rect(105, 84, 15, 45, top);
   }
 
   // Neck
   svg += rect(74, 65, 35, 20, skin);
 
-  // Long hair or bob
+  // Hair behind head
   if (a.hair === "long" || a.hair === "bob") {
     svg += rect(
-      56, 34, 69,
+      56,
+      34,
+      69,
       a.hair === "long" ? 81 : 60,
       hair
     );
@@ -398,7 +409,7 @@ function drawAvatar() {
     }
   }
 
-  // Pink secondary hair highlight
+  // Secondary hair colour
   svg += rect(105, 27, 12, 10, highlight);
   svg += rect(107, 37, 7, 12, highlight);
 
@@ -407,19 +418,18 @@ function drawAvatar() {
   svg += rect(100, 58, 6, 6, outline);
   svg += rect(87, 69, 10, 3, "#a45452");
 
-  // Masculine hair detail
-  if (a.style === "masculine") {
+  if (a.style === "masculine" || a.gender === "male") {
     svg += rect(59, 35, 12, 12, hair);
   }
 
   // Hats
   if (a.hat === "cap") {
-    svg += rect(60, 19, 65, 16, a.hatColor);
-    svg += rect(103, 32, 35, 7, a.hatColor);
+    svg += rect(60, 19, 65, 16, hat);
+    svg += rect(103, 32, 35, 7, hat);
   }
 
   if (a.hat === "beanie") {
-    svg += rect(61, 15, 64, 25, a.hatColor);
+    svg += rect(61, 15, 64, 25, hat);
     svg += rect(58, 36, 70, 7, outline);
   }
 
@@ -432,96 +442,143 @@ function drawAvatar() {
 
   // Accessories
   if (a.accessory === "glasses") {
-    svg += `<rect x="73" y="55" width="15" height="13"
-      fill="none" stroke="${outline}" stroke-width="3"/>`;
+    svg += `<rect x="73" y="55" width="15"
+      height="13" fill="none"
+      stroke="${outline}" stroke-width="3"/>`;
 
-    svg += `<rect x="97" y="55" width="15" height="13"
-      fill="none" stroke="${outline}" stroke-width="3"/>`;
+    svg += `<rect x="97" y="55" width="15"
+      height="13" fill="none"
+      stroke="${outline}" stroke-width="3"/>`;
 
     svg += rect(88, 59, 9, 3, outline);
   }
 
   if (a.accessory === "star") {
-    svg += '<text x="105" y="116" font-size="20">⭐</text>';
+    svg += rect(104, 105, 12, 12, "#f6d77a");
+    svg += rect(108, 101, 4, 20, "#f6d77a");
   }
 
-  $("#avatar").innerHTML = svg;
+  target.innerHTML = svg;
 }
 
-// AVATAR EDITOR
+// ==========================================
+// MAIN DASHBOARD
+// ==========================================
 
-const avatarFields = {
-  name: "editName",
-  style: "editStyle",
-  hair: "editHair",
-  hairColor: "editHairColor",
-  highlight: "editHighlight",
-  top: "editTop",
-  topColor: "editTopColor",
-  pants: "editPants",
-  pantsColor: "editPantsColor",
-  hat: "editHat",
-  hatColor: "editHatColor",
-  accessory: "editAccessory"
-};
+function render() {
+  const total = roadmap.milestones.length;
+  const done = completedCount();
 
-function fillAvatar() {
-  const avatar = hub.avatar;
+  const percentage = total
+    ? Math.round(done / total * 100)
+    : 0;
 
-  for (const [field, id] of Object.entries(avatarFields)) {
-    $("#" + id).value = avatar[field];
-  }
+  const index = nextQuestIndex();
+  const currentXP = totalXP() % 200;
 
-  for (const selector of [
-    "editTop", "editPants", "editHat", "editAccessory"
-  ]) {
-    for (const option of $("#" + selector).options) {
-      const item = option.value;
+  $("#progressPct").textContent = percentage + "%";
+  $("#progressFill").style.width = percentage + "%";
 
-      option.disabled = Boolean(
-        unlocks[item] && level() < unlocks[item]
-      );
-    }
-  }
+  $("#progressDescription").textContent =
+    `${done} of ${total} milestones complete`;
+
+  $("#completedStat").textContent = done;
+  $("#totalStat").textContent = total;
+
+  $("#badgeStat").textContent =
+    getBadges().filter(b => b.unlocked).length;
+
+  $("#levelBadge").textContent =
+    "LVL " + playerLevel();
+
+  $("#xpLabel").textContent =
+    currentXP + " / 200 XP";
+
+  $("#xpFill").style.width =
+    (currentXP / 200 * 100) + "%";
+
+  $("#streak").textContent =
+    getStreak() + " DAY STREAK";
+
+  $("#subtitle").textContent =
+    roadmap.title ||
+    "Build skills. Complete quests. Level up.";
+
+  $("#avatarName").textContent =
+    hub.avatar.name || "Explorer";
+
+  $("#questNumber").textContent =
+    index < 0
+      ? "DONE"
+      : "#" + String(index + 1).padStart(2, "0");
+
+  const milestone = roadmap.milestones[index];
+
+  $("#nextQuestTitle").textContent =
+    milestone?.title || "All quests completed!";
+
+  $("#nextQuestDesc").textContent =
+    milestone?.description ||
+    "You completed your journey!";
+
+  $("#nextQuestDue").textContent =
+    milestone?.due
+      ? "TARGET: " + milestone.due
+      : "";
+
+  $("#completeQuest").disabled = index < 0;
+  $("#questHelp").disabled = index < 0;
+
+  // Journey map
+  const journey = $("#journey");
+  journey.replaceChildren();
+
+  roadmap.milestones.forEach((m, i) => {
+    const card = document.createElement("div");
+
+    card.className = "quest " +
+      (m.done ? "done" : i === index ? "current" : "");
+
+    const iconBox = document.createElement("div");
+    iconBox.className = "dot";
+
+    const iconName = m.done
+      ? "icon-check"
+      : i === index
+        ? "icon-flag"
+        : "icon-lock";
+
+    iconBox.append(pixelIcon(iconName));
+
+    const title = document.createElement("b");
+    title.textContent = m.title || "Untitled quest";
+
+    const due = document.createElement("small");
+    due.textContent = m.due || "No deadline";
+
+    card.append(iconBox, title, due);
+    journey.append(card);
+  });
+
+  drawAvatar();
 }
 
-$("#saveAvatar").addEventListener("click", () => {
-  const updated = {};
-
-  for (const [field, id] of Object.entries(avatarFields)) {
-    const value = $("#" + id).value;
-
-    if (unlocks[value] && level() < unlocks[value]) {
-      toast("That item is still locked!");
-      return;
-    }
-
-    updated[field] = value;
-  }
-
-  hub.avatar = updated;
-
-  save();
-  render();
-
-  $("#avatarModal").close();
-  toast("Avatar saved!");
-});
-
+// ==========================================
 // DEADLINE PARSING
+// ==========================================
 
 function parseDue(value) {
   if (!value) return Infinity;
 
-  const match = value.match(
+  const match = String(value).match(
     /^(\d{2})-(\d{2})-(\d{4})$/
   );
 
   if (match) {
     return new Date(
-      +match[3],
-      +match[2] - 1,
-      +match[1]
+      Number(match[3]),
+      Number(match[2]) - 1,
+      Number(match[1])
     ).getTime();
   }
 
@@ -532,9 +589,11 @@ function parseDue(value) {
     : timestamp;
 }
 
-// RESOURCES, MENTORS, DEADLINES, BADGES AND JOURNAL
+// ==========================================
+// RESOURCES
+// ==========================================
 
-function populate() {
+function populateResources() {
   const resources = [
     [
       "freeCodeCamp",
@@ -548,97 +607,152 @@ function populate() {
     ],
     [
       "GitHub Skills",
-      "Practice Git and GitHub",
+      "Learn Git and GitHub",
       "https://skills.github.com/"
     ],
     [
       "UCAS",
-      "University course and application guidance",
+      "University application guidance",
       "https://www.ucas.com/"
     ],
     [
       "OpenLearn",
-      "Free university-level learning",
+      "Free university learning",
       "https://www.open.edu/openlearn/"
     ]
   ];
 
-  $("#resourceList").innerHTML = resources.map(
-    ([name, description, url]) => `
-      <div class="mini-card">
-        <b>${name}</b>
-        <p>${description}</p>
-        <a href="${url}" target="_blank" rel="noopener">
-          OPEN RESOURCE ↗
-        </a>
-      </div>
-    `
-  ).join("");
+  const list = $("#resourceList");
+  list.replaceChildren();
 
-  // Demo mentor profiles
+  resources.forEach(([name, description, url]) => {
+    const card = document.createElement("div");
+    card.className = "mini-card";
+
+    const title = document.createElement("b");
+    title.textContent = name;
+
+    const info = document.createElement("p");
+    info.textContent = description;
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.textContent = "OPEN RESOURCE";
+
+    card.append(title, info, link);
+    list.append(card);
+  });
+}
+
+// ==========================================
+// MENTORS
+// ==========================================
+
+function populateMentors() {
   const mentors = [
     ["Alex", "Computer Science", "Projects and coding"],
     ["Sam", "Physics", "Studying and research"],
     ["Jamie", "Student mentor", "University applications"]
   ];
 
-  $("#mentorList").innerHTML = mentors.map(
-    ([name, subject, specialty]) => `
-      <div class="mini-card">
-        <b>👤 ${name} · ${subject}</b>
-        <p>${specialty}</p>
-        <button class="btn small yellow mentor-request">
-          REQUEST INTRO (DEMO)
-        </button>
-      </div>
-    `
-  ).join("");
+  const list = $("#mentorList");
+  list.replaceChildren();
 
-  document.querySelectorAll(".mentor-request").forEach(
-    button => button.addEventListener("click", () => {
-      toast("Demo only: mentor messaging is not connected yet.");
-    })
-  );
-
-  // Upcoming deadlines
-  const remaining = roadmap.milestones
-    .filter(m => !m.done)
-    .sort((a, b) => parseDue(a.due) - parseDue(b.due));
-
-  $("#deadlineList").replaceChildren();
-
-  remaining.forEach(milestone => {
+  mentors.forEach(([name, subject, specialty]) => {
     const card = document.createElement("div");
     card.className = "mini-card";
 
     const title = document.createElement("b");
-    title.textContent = milestone.title;
+    title.textContent = name + " | " + subject;
 
-    const date = document.createElement("p");
-    date.textContent = milestone.due || "No deadline";
+    const info = document.createElement("p");
+    info.textContent = specialty;
 
-    card.append(title, date);
-    $("#deadlineList").append(card);
+    const button = document.createElement("button");
+    button.className = "btn small yellow";
+    button.textContent = "REQUEST INTRO";
+
+    button.addEventListener("click", () => {
+      toast("Mentor messaging is not connected yet.");
+    });
+
+    card.append(title, info, button);
+    list.append(card);
   });
+}
+
+// ==========================================
+// DEADLINES
+// ==========================================
+
+function populateDeadlines() {
+  const list = $("#deadlineList");
+  list.replaceChildren();
+
+  const remaining = roadmap.milestones
+    .filter(m => !m.done)
+    .sort((a, b) => parseDue(a.due) - parseDue(b.due));
 
   if (!remaining.length) {
-    $("#deadlineList").textContent =
-      "No upcoming milestones.";
+    list.textContent = "No upcoming milestones.";
+    return;
   }
 
-  // Achievements
-  $("#achievementList").innerHTML = badges().map(
-    badge => `
-      <div class="mini-card">
-        ${badge.icon}
-        <b>${badge.name}</b>
-        · ${badge.ok ? "UNLOCKED" : "LOCKED"}
-      </div>
-    `
-  ).join("");
+  remaining.forEach(m => {
+    const card = document.createElement("div");
+    card.className = "mini-card";
 
-  // Journal entries
-  $("#journalEntries").replaceChildren();
+    const title = document.createElement("b");
+    title.textContent = m.title || "Untitled quest";
+
+    const date = document.createElement("p");
+    date.textContent = m.due || "No deadline";
+
+    card.append(title, date);
+    list.append(card);
+  });
+}
+
+// ==========================================
+// ACHIEVEMENTS
+// ==========================================
+
+function populateAchievements() {
+  const list = $("#achievementList");
+  list.replaceChildren();
+
+  getBadges().forEach(badge => {
+    const card = document.createElement("div");
+
+    card.className = "mini-card " +
+      (badge.unlocked ? "unlocked" : "locked");
+
+    const icon = pixelIcon(badge.icon);
+
+    const info = document.createElement("div");
+
+    const title = document.createElement("b");
+    title.textContent = badge.name;
+
+    const status = document.createElement("small");
+    status.textContent =
+      badge.unlocked ? "UNLOCKED" : "LOCKED";
+
+    info.append(title, status);
+    card.append(icon, info);
+    list.append(card);
+  });
+}
+
+// ==========================================
+// JOURNAL
+// ==========================================
+
+function populateJournal() {
+  const list = $("#journalEntries");
+  list.replaceChildren();
 
   hub.journal.slice().reverse().forEach(entry => {
     const card = document.createElement("div");
@@ -651,24 +765,42 @@ function populate() {
     text.textContent = entry.text;
 
     card.append(date, text);
-    $("#journalEntries").append(card);
+    list.append(card);
   });
 }
 
-// POPUP MANAGEMENT
+function populate() {
+  populateResources();
+  populateMentors();
+  populateDeadlines();
+  populateAchievements();
+  populateJournal();
+}
+
+// ==========================================
+// MODALS
+// ==========================================
 
 function openModal(id) {
-  if (id === "avatarModal") {
-    fillAvatar();
-  }
+  const modal = document.getElementById(id);
 
-  if (id === "helpModal") {
-    $("#helpQuest").textContent =
-      roadmap.milestones[next()]?.title || "Your next goal";
+  if (!modal) {
+    console.warn("Modal not found:", id);
+    return;
   }
 
   populate();
-  $("#" + id).showModal();
+
+  if (id === "helpModal") {
+    const next = roadmap.milestones[nextQuestIndex()];
+
+    $("#helpQuest").textContent =
+      next?.title || "Your next goal";
+  }
+
+  if (!modal.open) {
+    modal.showModal();
+  }
 }
 
 document.querySelectorAll("[data-open]").forEach(button => {
@@ -679,7 +811,7 @@ document.querySelectorAll("[data-open]").forEach(button => {
 
 document.querySelectorAll("[data-close]").forEach(button => {
   button.addEventListener("click", () => {
-    button.closest("dialog").close();
+    button.closest("dialog")?.close();
   });
 });
 
@@ -693,113 +825,161 @@ document.querySelectorAll("dialog").forEach(dialog => {
 
 document.querySelectorAll("[data-switch]").forEach(button => {
   button.addEventListener("click", () => {
-    button.closest("dialog").close();
+    button.closest("dialog")?.close();
     openModal(button.dataset.switch);
   });
 });
 
-// COMPLETE A QUEST
+// ==========================================
+// COMPLETE QUEST
+// ==========================================
 
 $("#completeQuest").addEventListener("click", () => {
-  const index = next();
-
+  const index = nextQuestIndex();
   if (index < 0) return;
 
   roadmap.milestones[index].done = true;
 
-  activity();
+  recordActivity();
   save();
   render();
+  populate();
 
-  toast("QUEST COMPLETE! +100 XP ✦");
+  toast("QUEST COMPLETE! +100 XP");
 });
 
-// HELP BUTTON
+// ==========================================
+// HELP
+// ==========================================
 
 $("#questHelp").addEventListener("click", () => {
   openModal("helpModal");
 });
 
-// LEARNING JOURNAL
+// ==========================================
+// SAVE JOURNAL
+// ==========================================
 
 $("#addJournal").addEventListener("click", () => {
-  const text = $("#journalText").value.trim();
+  const input = $("#journalText");
+  const text = input.value.trim();
 
-  if (!text) return;
+  if (!text) {
+    toast("Write something first!");
+    return;
+  }
 
   hub.journal.push({
     date: new Date().toLocaleString(),
     text
   });
 
-  $("#journalText").value = "";
+  input.value = "";
 
-  activity();
+  recordActivity();
   save();
   render();
   populate();
 
-  toast("Journal entry saved!");
+  toast("JOURNAL SAVED! +15 XP");
 });
 
-// SAVE A HELP QUESTION
+// ==========================================
+// SAVE HELP QUESTION
+// ==========================================
 
 $("#saveHelp").addEventListener("click", () => {
-  const text = $("#helpNote").value.trim();
+  const input = $("#helpNote");
+  const text = input.value.trim();
 
-  if (!text) return;
+  if (!text) {
+    toast("Write your question first!");
+    return;
+  }
 
   hub.journal.push({
     date: new Date().toLocaleString(),
     text: "QUESTION: " + text
   });
 
-  $("#helpNote").value = "";
+  input.value = "";
 
-  activity();
+  recordActivity();
   save();
   render();
+  populate();
 
   $("#helpModal").close();
 
-  toast("Question saved to journal");
+  toast("QUESTION SAVED TO JOURNAL");
 });
 
+// ==========================================
 // RESET DEMO
+// ==========================================
 
 $("#resetDemo").addEventListener("click", () => {
-  if (!confirm(
-    "Reset the hub? This will not erase your real roadmap."
-  )) {
-    return;
-  }
+  const confirmed = confirm(
+    "Reset Hub progress? Your avatar and generated roadmap will be kept."
+  );
+
+  if (!confirmed) return;
 
   if (demoMode) {
-    roadmap = structuredClone(demo);
+    roadmap = clone(demo);
   }
 
-  hub = structuredClone(defaults);
+  hub.journal = [];
+  hub.activityDates = [];
+  hub.helpRequests = [];
 
   save();
   render();
+  populate();
 
-  toast("Hub reset");
+  toast("HUB PROGRESS RESET");
 });
 
-// SYNC ROADMAP CHANGES FROM OTHER TABS
+// ==========================================
+// SYNC BETWEEN PAGES
+// ==========================================
+
+function refreshSharedData() {
+  const savedRoadmap = load(ROADMAP_KEY, null);
+
+  if (
+    savedRoadmap &&
+    Array.isArray(savedRoadmap.milestones)
+  ) {
+    roadmap = savedRoadmap;
+    demoMode = false;
+  }
+
+  hub.avatar = getAvatar();
+
+  render();
+  populate();
+}
 
 window.addEventListener("storage", event => {
-  if (event.key === ROADMAP_KEY) {
-    const incoming = load(ROADMAP_KEY, null);
-
-    if (incoming?.milestones) {
-      roadmap = incoming;
-      demoMode = false;
-      render();
-    }
+  if (
+    event.key === ROADMAP_KEY ||
+    event.key === AVATAR_KEY ||
+    event.key === "player"
+  ) {
+    refreshSharedData();
   }
 });
 
-// START THE HUB
+window.addEventListener("pageshow", () => {
+  refreshSharedData();
+});
+
+// ==========================================
+// START GAME
+// ==========================================
 
 render();
+populate();
+
+console.log("STARLING HUB READY");

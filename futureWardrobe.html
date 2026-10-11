@@ -1,0 +1,760 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ROADMAP | Future Wardrobe</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --cream:#F3DDAE;
+  --paper:#FFF0CE;
+  --dark:#352B31;
+  --brown:#584137;
+  --orange:#B97450;
+  --mint:#A9C8B2;
+  --purple:#665B73;
+  --yellow:#E9BD59;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  min-height:100vh;
+  background-color:var(--cream);
+  background-image:radial-gradient(#D87C50 1.4px,transparent 1.4px);
+  background-size:28px 28px;
+  color:var(--dark);
+  font-family:'VT323',monospace;
+}
+header {
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:center;
+  padding:20px 4%;
+  font-family:'Press Start 2P',monospace;
+  font-size:10px;
+  line-height:1.8;
+}
+.layout {
+  max-width:1250px;
+  margin:15px auto 45px;
+  padding:0 20px;
+  display:grid;
+  grid-template-columns:0.85fr 1.15fr;
+  gap:35px;
+  align-items:start;
+}
+.tv {
+  background:var(--orange);
+  border:6px solid var(--brown);
+  border-radius:32px;
+  padding:20px;
+  box-shadow:10px 12px 0 var(--brown);
+  position:sticky;
+  top:18px;
+}
+.bezel {
+  background:#302B32;
+  border:5px solid #211F24;
+  border-radius:35px;
+  padding:13px;
+}
+.screen {
+  background:var(--mint);
+  min-height:445px;
+  border:5px solid var(--dark);
+  border-radius:35px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  overflow:hidden;
+  padding:20px;
+}
+.screen::after {
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:repeating-linear-gradient(
+    to bottom,transparent 0 4px,rgba(30,40,30,.08) 5px
+  );
+}
+.pixel {
+  font-family:'Press Start 2P',monospace;
+  font-size:10px;
+  line-height:1.8;
+  text-align:center;
+}
+#avatar {
+  width:200px;
+  height:290px;
+  max-width:100%;
+  position:relative;
+  z-index:1;
+  filter:drop-shadow(5px 5px 0 rgba(0,0,0,.12));
+}
+.player-name {
+  font-family:'Press Start 2P',monospace;
+  font-size:13px;
+  margin:8px 0;
+}
+.tv-bottom {
+  display:flex;
+  justify-content:space-between;
+  color:var(--paper);
+  padding:16px 8px 0;
+  font-family:'Press Start 2P',monospace;
+  font-size:9px;
+}
+.light {
+  width:13px;
+  height:13px;
+  border-radius:50%;
+  background:#B7F28C;
+  box-shadow:0 0 10px #B7F28C;
+}
+.xp {
+  margin-top:22px;
+  background:var(--paper);
+  padding:17px;
+  border:4px solid var(--dark);
+  box-shadow:6px 6px 0 var(--brown);
+}
+.xp-top {
+  display:flex;
+  justify-content:space-between;
+  font-size:22px;
+}
+.xp-track {
+  height:17px;
+  background:#C9BBA6;
+  border:3px solid var(--dark);
+  margin-top:8px;
+}
+.xp-fill {
+  width:78%;
+  height:100%;
+  background:var(--yellow);
+}
+.panel {
+  background:var(--purple);
+  border:6px solid var(--dark);
+  border-radius:27px;
+  padding:28px;
+  box-shadow:10px 12px 0 var(--brown);
+  color:var(--paper);
+}
+h1 {
+  font-family:'Press Start 2P',monospace;
+  font-size:19px;
+  line-height:1.8;
+  text-align:center;
+  margin:0 0 10px;
+}
+.subtitle {
+  font-size:23px;
+  text-align:center;
+  margin:0 0 25px;
+}
+.tabs {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:25px;
+}
+button {
+  cursor:pointer;
+  font-family:'Press Start 2P',monospace;
+}
+.tab {
+  flex:1;
+  min-width:85px;
+  padding:13px 6px;
+  font-size:9px;
+  border:3px solid var(--dark);
+  background:var(--paper);
+  color:var(--dark);
+  box-shadow:3px 3px 0 #29252A;
+}
+.tab.active { background:var(--yellow); }
+.category { display:none; }
+.category.active { display:block; }
+h2 {
+  font-family:'Press Start 2P',monospace;
+  font-size:12px;
+  line-height:2;
+  margin:12px 0 22px;
+}
+.options {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+}
+.option {
+  background:var(--paper);
+  color:var(--dark);
+  border:3px solid var(--dark);
+  min-height:72px;
+  padding:12px 6px;
+  font-size:9px;
+  line-height:1.8;
+  overflow-wrap:anywhere;
+  box-shadow:4px 4px 0 #29252A;
+}
+.option.selected {
+  background:var(--yellow);
+  outline:2px solid white;
+  outline-offset:2px;
+}
+.option:hover,.action:hover {
+  transform:translate(2px,2px);
+  box-shadow:2px 2px 0 #29252A;
+}
+.colour-heading { margin-top:28px; }
+.swatches {
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+}
+.swatch {
+  width:43px;
+  height:43px;
+  background:var(--swatch);
+  border:3px solid var(--dark);
+  box-shadow:3px 3px 0 #29252A;
+}
+.swatch.selected {
+  outline:3px solid var(--yellow);
+  outline-offset:3px;
+}
+.reward {
+  margin-top:25px;
+  padding:16px;
+  background:#493E52;
+  border:3px dashed var(--yellow);
+  font-family:'Press Start 2P',monospace;
+  font-size:9px;
+  line-height:2;
+}
+.actions {
+  display:flex;
+  gap:12px;
+  margin-top:22px;
+}
+.action {
+  flex:1;
+  background:var(--yellow);
+  color:var(--dark);
+  border:4px solid var(--dark);
+  padding:15px 8px;
+  font-size:9px;
+  line-height:1.8;
+  box-shadow:4px 4px 0 #29252A;
+}
+.action.secondary { background:var(--mint); }
+.hidden { display:none !important; }
+@media(max-width:850px) {
+  .layout { grid-template-columns:1fr; max-width:600px; }
+  .tv { position:static; }
+}
+@media(max-width:480px) {
+  header { font-size:7px; }
+  .panel { padding:18px; }
+  .options { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  h1 { font-size:15px; }
+  .action { font-size:8px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <span>✦ ROADMAP ARCADE ✦</span>
+  <span>THE FUTURE / LEVEL 10</span>
+</header>
+
+<main class="layout">
+
+  <div>
+    <section class="tv">
+      <div class="bezel">
+        <div class="screen">
+          <div class="pixel">WARDROBE 2.0</div>
+
+          <svg id="avatar" viewBox="0 0 200 300"
+               xmlns="http://www.w3.org/2000/svg">
+
+            <!-- BODY -->
+            <path d="M83 210 L77 264 M117 210 L123 264"
+                  stroke="#352B31" stroke-width="9"
+                  stroke-linecap="round" fill="none"/>
+            <path d="M77 264 L58 273 M123 264 L142 273"
+                  stroke="#352B31" stroke-width="10"
+                  stroke-linecap="round" fill="none"/>
+            <path d="M74 145 L48 192 M126 145 L152 192"
+                  stroke="#352B31" stroke-width="8"
+                  stroke-linecap="round" fill="none"/>
+
+            <!-- TOPS -->
+            <g id="top-tshirt">
+              <path class="top-fill"
+                    d="M79 133 L60 145 L71 167 L78 161
+                       L78 207 H122 V161 L129 167
+                       L140 145 L121 133 Z"
+                    stroke="#352B31" stroke-width="4"/>
+            </g>
+            <g id="top-hoodie" class="hidden">
+              <path class="top-fill"
+                    d="M79 132 L58 145 L69 172 L77 164
+                       V209 H123 V164 L131 172 L142 145
+                       L121 132 Z"
+                    stroke="#352B31" stroke-width="4"/>
+              <path d="M82 136 Q100 162 118 136 M93 157 V177 M107 157 V177"
+                    fill="none" stroke="#352B31" stroke-width="3"/>
+              <path d="M86 190 H114" fill="none"
+                    stroke="#352B31" stroke-width="3"/>
+            </g>
+            <g id="top-sweater" class="hidden">
+              <path class="top-fill"
+                    d="M80 133 L57 146 L67 176 L78 169
+                       V207 H122 V169 L133 176 L143 146
+                       L120 133 Z"
+                    stroke="#352B31" stroke-width="4"/>
+              <path d="M80 135 Q100 154 120 135 M78 194 H122"
+                    fill="none" stroke="#352B31" stroke-width="3"/>
+            </g>
+            <g id="top-jacket" class="hidden">
+              <path class="top-fill"
+                    d="M80 133 L59 145 L70 170 L79 163
+                       V209 H121 V163 L130 170 L141 145
+                       L120 133 Z"
+                    stroke="#352B31" stroke-width="4"/>
+              <path d="M100 140 V207 M81 135 L100 157 L119 135"
+                    fill="none" stroke="#352B31" stroke-width="3"/>
+              <circle cx="106" cy="174" r="2" fill="#352B31"/>
+              <circle cx="106" cy="190" r="2" fill="#352B31"/>
+            </g>
+            <g id="top-crop" class="hidden">
+              <path class="top-fill"
+                    d="M79 133 L60 145 L71 167 L78 161
+                       V185 H122 V161 L129 167 L140 145
+                       L121 133 Z"
+                    stroke="#352B31" stroke-width="4"/>
+            </g>
+            <g id="top-varsity" class="hidden">
+              <path class="top-fill"
+                    d="M80 133 L58 145 L69 174 L78 165
+                       V208 H122 V165 L131 174 L142 145
+                       L120 133 Z"
+                    stroke="#352B31" stroke-width="4"/>
+              <path d="M100 140 V207 M80 194 H120"
+                    stroke="#352B31" stroke-width="3" fill="none"/>
+              <text x="85" y="178" font-size="15"
+                    font-family="monospace" font-weight="bold"
+                    fill="#352B31">R</text>
+            </g>
+
+            <!-- BOTTOMS -->
+            <g id="bottom-jeans">
+              <path class="bottom-fill"
+                    d="M78 205 H122 L119 232 H104
+                       L100 218 L96 232 H81 Z"
+                    stroke="#352B31" stroke-width="4"/>
+            </g>
+            <g id="bottom-trousers" class="hidden">
+              <path class="bottom-fill"
+                    d="M78 205 H122 L120 244 H105
+                       L100 220 L95 244 H80 Z"
+                    stroke="#352B31" stroke-width="4"/>
+            </g>
+            <g id="bottom-shorts" class="hidden">
+              <path class="bottom-fill"
+                    d="M78 205 H122 L120 223 H104
+                       L100 215 L96 223 H80 Z"
+                    stroke="#352B31" stroke-width="4"/>
+            </g>
+            <g id="bottom-cargo" class="hidden">
+              <path class="bottom-fill"
+                    d="M77 205 H123 L123 240 H105
+                       L100 219 L95 240 H77 Z"
+                    stroke="#352B31" stroke-width="4"/>
+              <rect x="76" y="219" width="12" height="11"
+                    fill="none" stroke="#352B31" stroke-width="2"/>
+              <rect x="112" y="219" width="12" height="11"
+                    fill="none" stroke="#352B31" stroke-width="2"/>
+            </g>
+            <g id="bottom-skirt" class="hidden">
+              <path class="bottom-fill"
+                    d="M81 205 H119 L137 240 H63 Z"
+                    stroke="#352B31" stroke-width="4"/>
+            </g>
+
+            <!-- HAIR BACK -->
+            <g id="hair-long" class="hidden">
+              <path class="hair-fill"
+                    d="M63 100 Q55 48 100 46 Q145 48 137 100
+                       L145 165 H121 V105 H79 V165 H55 Z"
+                    stroke="#352B31" stroke-width="4"/>
+            </g>
+            <g id="hair-curly" class="hidden">
+              <path class="hair-fill"
+                    d="M61 99 Q48 83 62 70 Q54 52 76 49
+                       Q87 36 103 47 Q124 36 133 55
+                       Q151 63 138 84 L137 103 Z"
+                    stroke="#352B31" stroke-width="4"/>
+            </g>
+            <g id="hair-ponytail" class="hidden">
+              <path class="hair-fill"
+                    d="M124 72 Q158 57 157 112
+                       Q153 140 139 154 L130 135
+                       Q146 104 124 88 Z"
+                    stroke="#352B31" stroke-width="4"/>
+            </g>
+
+            <!-- FACE -->
+            <circle cx="100" cy="100" r="36"
+                    fill="#E8B992" stroke="#352B31"
+                    stroke-width="4"/>
+            <circle cx="88" cy="101" r="3" fill="#352B31"/>
+            <circle cx="112" cy="101" r="3" fill="#352B31"/>
+            <path d="M91 115 Q100 123 109 115"
+                  fill="none" stroke="#352B31"
+                  stroke-width="3" stroke-linecap="round"/>
+
+            <!-- HAIR FRONT -->
+            <g id="hair-short-front">
+              <path class="hair-fill"
+                    d="M66 85 Q68 60 92 62 Q108 53 121 65
+                       Q132 70 134 85 Q117 79 111 72
+                       Q94 85 83 77 Q76 85 66 85 Z"
+                    stroke="#352B31" stroke-width="3"/>
+            </g>
+            <g id="hair-long-front" class="hidden">
+              <path class="hair-fill"
+                    d="M65 88 Q67 57 100 58 Q133 57 135 88
+                       Q116 79 107 71 Q91 90 65 88 Z"
+                    stroke="#352B31" stroke-width="3"/>
+            </g>
+            <g id="hair-curly-front" class="hidden">
+              <path class="hair-fill"
+                    d="M64 90 Q57 76 72 72 Q73 58 89 65
+                       Q100 53 111 64 Q128 55 134 78
+                       L134 90 Q117 80 107 77
+                       Q90 90 80 80 Z"
+                    stroke="#352B31" stroke-width="3"/>
+            </g>
+            <g id="hair-ponytail-front" class="hidden">
+              <path class="hair-fill"
+                    d="M66 87 Q67 58 100 58 Q133 58 134 87
+                       Q116 76 108 72 Q88 87 66 87 Z"
+                    stroke="#352B31" stroke-width="3"/>
+            </g>
+
+            <!-- HATS -->
+            <g id="hat-top" class="hidden">
+              <rect class="hat-fill" x="75" y="29" width="50"
+                    height="42" rx="3" stroke="#352B31"
+                    stroke-width="4"/>
+              <rect class="hat-fill" x="65" y="67" width="70"
+                    height="11" stroke="#352B31" stroke-width="4"/>
+            </g>
+            <g id="hat-cap" class="hidden">
+              <path class="hat-fill"
+                    d="M66 81 Q67 47 100 46 Q133 47 134 81 Z"
+                    stroke="#352B31" stroke-width="4"/>
+              <path class="hat-fill"
+                    d="M100 79 H151 Q149 88 132 88 H100 Z"
+                    stroke="#352B31" stroke-width="4"/>
+            </g>
+            <g id="hat-beanie" class="hidden">
+              <path class="hat-fill"
+                    d="M66 81 Q64 46 100 45 Q136 46 134 81 Z"
+                    stroke="#352B31" stroke-width="4"/>
+              <rect class="hat-fill" x="65" y="74" width="70"
+                    height="13" rx="4" stroke="#352B31"
+                    stroke-width="4"/>
+            </g>
+            <g id="hat-bucket" class="hidden">
+              <path class="hat-fill"
+                    d="M75 49 H125 L134 78 H66 Z"
+                    stroke="#352B31" stroke-width="4"/>
+              <path class="hat-fill"
+                    d="M65 75 H135 L148 86 H52 Z"
+                    stroke="#352B31" stroke-width="4"/>
+            </g>
+            <g id="hat-crown" class="hidden">
+              <path class="hat-fill"
+                    d="M67 78 L62 46 L82 58 L100 35
+                       L118 58 L138 46 L133 78 Z"
+                    stroke="#352B31" stroke-width="4"/>
+              <circle cx="100" cy="65" r="5" fill="#E94D8A"/>
+            </g>
+
+          </svg>
+
+          <div class="player-name" id="playerName">PLAYER ONE</div>
+          <div class="pixel">★ LEVEL 10 · EXPLORER ★</div>
+        </div>
+      </div>
+
+      <div class="tv-bottom">
+        <span>ROADMAP 1998</span>
+        <span class="light"></span>
+      </div>
+    </section>
+
+    <div class="xp">
+      <div class="xp-top">
+        <span>⭐ LEVEL 10</span>
+        <span>780 / 1000 XP</span>
+      </div>
+      <div class="xp-track"><div class="xp-fill"></div></div>
+      <div style="margin-top:9px;font-size:20px">
+        12 QUESTS COMPLETED · NEW WARDROBE REWARDS!
+      </div>
+    </div>
+  </div>
+
+  <section class="panel">
+    <h1>YOUR WARDROBE</h1>
+    <p class="subtitle">New looks unlocked. Your adventure, your style!</p>
+
+    <nav class="tabs" aria-label="Wardrobe categories">
+      <button class="tab active" data-tab="tops">TOPS</button>
+      <button class="tab" data-tab="bottoms">BOTTOMS</button>
+      <button class="tab" data-tab="hair">HAIR</button>
+      <button class="tab" data-tab="hats">HATS</button>
+    </nav>
+
+    <div class="category active" id="category-tops">
+      <h2>CHOOSE YOUR TOP</h2>
+      <div class="options" id="options-tops"></div>
+    </div>
+
+    <div class="category" id="category-bottoms">
+      <h2>CHOOSE YOUR BOTTOMS</h2>
+      <div class="options" id="options-bottoms"></div>
+    </div>
+
+    <div class="category" id="category-hair">
+      <h2>CHOOSE YOUR HAIRSTYLE</h2>
+      <div class="options" id="options-hair"></div>
+    </div>
+
+    <div class="category" id="category-hats">
+      <h2>CHOOSE YOUR HAT</h2>
+      <div class="options" id="options-hats"></div>
+    </div>
+
+    <h2 class="colour-heading" id="colourHeading">CHOOSE TOP COLOUR</h2>
+    <div class="swatches" id="swatches"></div>
+
+    <div class="reward">
+      ★ ACHIEVEMENT UNLOCKED: STYLE EXPLORER!<br>
+      COMPLETE MORE QUESTS TO EARN RARE OUTFITS,
+      SPECIAL ACCESSORIES AND LIMITED EDITION COLOURS.
+    </div>
+
+    <div class="actions">
+      <button class="action" id="randomBtn">🎲 SURPRISE ME</button>
+      <button class="action secondary" id="resetBtn">↺ RESET</button>
+    </div>
+  </section>
+
+</main>
+
+<script>
+const styles = {
+  tops: ["tshirt","hoodie","sweater","jacket","crop","varsity"],
+  bottoms: ["jeans","trousers","shorts","cargo","skirt"],
+  hair: ["short","long","curly","ponytail"],
+  hats: ["none","top","cap","beanie","bucket","crown"]
+};
+
+const names = {
+  tshirt:"T-SHIRT",
+  hoodie:"HOODIE",
+  sweater:"SWEATER",
+  jacket:"JACKET",
+  crop:"CROP TOP",
+  varsity:"VARSITY",
+  jeans:"JEANS",
+  trousers:"TROUSERS",
+  shorts:"SHORTS",
+  cargo:"CARGO",
+  skirt:"SKIRT",
+  short:"SHORT",
+  long:"LONG",
+  curly:"CURLY",
+  ponytail:"PONYTAIL",
+  none:"NO HAT",
+  top:"TOP HAT",
+  cap:"CAP",
+  beanie:"BEANIE",
+  bucket:"BUCKET",
+  crown:"CROWN"
+};
+
+const palette = [
+  "#FFFFFF","#222222","#F28CB7","#65B9E8",
+  "#74BD91","#F2C65D","#A78BDB","#EF9864"
+];
+
+const initial = {
+  tops:"varsity",
+  bottoms:"cargo",
+  hair:"long",
+  hats:"beanie",
+  topColor:"#F28CB7",
+  bottomColor:"#65B9E8",
+  hairColor:"#222222",
+  hatColor:"#F2C65D"
+};
+
+let state = {...initial};
+let activeTab = "tops";
+
+const colorKeys = {
+  tops:"topColor",
+  bottoms:"bottomColor",
+  hair:"hairColor",
+  hats:"hatColor"
+};
+
+const fillClasses = {
+  tops:".top-fill",
+  bottoms:".bottom-fill",
+  hair:".hair-fill",
+  hats:".hat-fill"
+};
+
+function renderAvatar() {
+  for (const [category, values] of Object.entries(styles)) {
+    values.forEach(value => {
+      if (category === "hair") {
+        const back = document.getElementById("hair-" + value);
+        const front = document.getElementById("hair-" + value + "-front");
+
+        if (back) back.classList.toggle("hidden", state.hair !== value);
+        if (front) front.classList.toggle("hidden", state.hair !== value);
+      } else {
+        const prefix = category === "tops" ? "top"
+                     : category === "bottoms" ? "bottom"
+                     : "hat";
+        const element = document.getElementById(prefix + "-" + value);
+
+        if (element) {
+          element.classList.toggle("hidden", state[category] !== value);
+        }
+      }
+    });
+  }
+
+  for (const [category, selector] of Object.entries(fillClasses)) {
+    document.querySelectorAll(selector).forEach(shape => {
+      shape.setAttribute("fill", state[colorKeys[category]]);
+    });
+  }
+}
+
+function renderOptions() {
+  for (const [category, values] of Object.entries(styles)) {
+    const container = document.getElementById("options-" + category);
+    container.replaceChildren();
+
+    values.forEach(value => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "option" + (state[category] === value ? " selected" : "");
+      button.textContent = names[value];
+      button.setAttribute("aria-pressed", String(state[category] === value));
+
+      button.addEventListener("click", () => {
+        state[category] = value;
+        renderAll();
+      });
+
+      container.appendChild(button);
+    });
+  }
+}
+
+function renderSwatches() {
+  const container = document.getElementById("swatches");
+  container.replaceChildren();
+
+  document.getElementById("colourHeading").textContent =
+    "CHOOSE " + activeTab.toUpperCase() + " COLOUR";
+
+  const key = colorKeys[activeTab];
+
+  palette.forEach(color => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "swatch" + (state[key] === color ? " selected" : "");
+    button.style.setProperty("--swatch", color);
+    button.setAttribute("aria-label", "Select colour " + color);
+    button.setAttribute("aria-pressed", String(state[key] === color));
+
+    button.addEventListener("click", () => {
+      state[key] = color;
+      renderAll();
+    });
+
+    container.appendChild(button);
+  });
+}
+
+function renderAll() {
+  renderAvatar();
+  renderOptions();
+  renderSwatches();
+}
+
+document.querySelectorAll(".tab").forEach(button => {
+  button.addEventListener("click", () => {
+    activeTab = button.dataset.tab;
+
+    document.querySelectorAll(".tab").forEach(tab => {
+      tab.classList.toggle("active", tab === button);
+    });
+
+    document.querySelectorAll(".category").forEach(section => {
+      section.classList.toggle(
+        "active",
+        section.id === "category-" + activeTab
+      );
+    });
+
+    renderSwatches();
+  });
+});
+
+function randomItem(array) {
+  return array[Math.floor(Math.random() * array.length)];
+}
+
+document.getElementById("randomBtn").addEventListener("click", () => {
+  for (const category of Object.keys(styles)) {
+    state[category] = randomItem(styles[category]);
+    state[colorKeys[category]] = randomItem(palette);
+  }
+  renderAll();
+});
+
+document.getElementById("resetBtn").addEventListener("click", () => {
+  state = {...initial};
+  renderAll();
+});
+
+renderAll();
+</script>
+
+</body>
+</html>
