@@ -1,0 +1,201 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Journey Hub</title>
+  <link rel="stylesheet" href="hub.css">
+</head>
+<body>
+<header class="top">
+  <a href="homepage.html" class="brand">✦ STARLING</a>
+  <nav>
+    <a href="roadmap.html">ROADMAP ↗</a>
+    <button id="resetDemo" class="small">RESET DEMO</button>
+  </nav>
+</header>
+
+<main class="shell">
+  <div class="headline">
+    <div>
+      <p class="eyebrow">YOUR ADVENTURE STARTS HERE</p>
+      <h1>MY JOURNEY HUB <span>✦</span></h1>
+      <p id="subtitle">Build skills. Complete quests. Level up.</p>
+    </div>
+    <div class="pill" id="streak">🔥 0 DAY STREAK</div>
+  </div>
+
+  <section class="hero">
+    <article class="panel profile">
+      <div class="sectionhead">
+        <h2>YOUR EXPLORER</h2>
+        <span class="tag" id="levelBadge">LVL 1</span>
+      </div>
+      <div class="avatar-stage">
+        <svg id="avatar" viewBox="0 0 180 210"
+          role="img" aria-label="Your customised pixel character"
+          shape-rendering="crispEdges"></svg>
+      </div>
+      <p class="avatar-name" id="avatarName">Explorer</p>
+      <a href="avatar.html?return=hub.html" class="btn yellow">
+        ✎ EDIT AVATAR
+      </a>
+      <div class="xp-line">
+        <span id="xpLabel">0 / 100 XP</span>
+        <span>LEVEL PROGRESS</span>
+      </div>
+      <div class="meter"><div id="xpFill"></div></div>
+    </article>
+
+    <article class="panel overview">
+      <div class="sectionhead">
+        <h2>YOUR PROGRESS</h2>
+        <span class="tag">MAIN QUEST</span>
+      </div>
+      <div class="progress-number" id="progressPct">0%</div>
+      <div class="meter big"><div id="progressFill"></div></div>
+      <p id="progressDescription">0 of 0 milestones complete</p>
+      <div class="stat-grid">
+        <div><b id="completedStat">0</b><span>COMPLETED</span></div>
+        <div><b id="totalStat">0</b><span>TOTAL QUESTS</span></div>
+        <div><b id="badgeStat">0</b><span>BADGES</span></div>
+      </div>
+      <div class="sectionhead">
+        <h3>NEXT QUEST</h3>
+        <span class="tag" id="questNumber">#01</span>
+      </div>
+      <h3 id="nextQuestTitle">Your journey begins here</h3>
+      <p id="nextQuestDesc">Create a roadmap to get started.</p>
+      <p class="due" id="nextQuestDue"></p>
+      <div class="actions">
+        <button id="completeQuest" class="btn mint">
+          ✓ COMPLETE QUEST
+        </button>
+        <button class="btn outline" id="questHelp">I'M STUCK?</button>
+      </div>
+    </article>
+  </section>
+
+  <section class="panel map-panel">
+    <div class="sectionhead">
+      <h2>✦ YOUR JOURNEY MAP</h2>
+      <a href="roadmap.html" class="btn small yellow">
+        FULL ROADMAP ↗
+      </a>
+    </div>
+    <div class="journey" id="journey"></div>
+  </section>
+
+  <section class="tiles">
+    <button class="tile" data-open="resourcesModal">
+      <span>📚</span><b>RESOURCE LIBRARY</b>
+      <small>Tools for your next step</small>
+    </button>
+    <button class="tile" data-open="mentorsModal">
+      <span>🤝</span><b>FIND A MENTOR</b>
+      <small>Get guidance from others</small>
+    </button>
+    <button class="tile" data-open="deadlinesModal">
+      <span>📅</span><b>DEADLINES</b>
+      <small>Stay ahead of your quests</small>
+    </button>
+    <button class="tile" data-open="journalModal">
+      <span>📓</span><b>LEARNING JOURNAL</b>
+      <small>Record your wins</small>
+    </button>
+    <button class="tile" data-open="achievementsModal">
+      <span>🏆</span><b>ACHIEVEMENTS</b>
+      <small>Collect your badges</small>
+    </button>
+    <button class="tile" data-open="helpModal">
+      <span>💬</span><b>I'M STUCK</b>
+      <small>Find your next step</small>
+    </button>
+  </section>
+  <footer>YOUR STORY IS STILL BEING WRITTEN ✦</footer>
+</main>
+
+
+<dialog id="resourcesModal">
+  <div class="modal-head">
+    <h2>📚 RESOURCE LIBRARY</h2>
+    <button data-close>✕</button>
+  </div>
+  <div class="modal-body">
+    <p>Useful starting points for learning and building projects.</p>
+    <div id="resourceList"></div>
+  </div>
+</dialog>
+
+<dialog id="mentorsModal">
+  <div class="modal-head">
+    <h2>🤝 FIND A MENTOR</h2>
+    <button data-close>✕</button>
+  </div>
+  <div class="modal-body">
+    <p>Sample mentor profiles for the demo. No real messages are sent.</p>
+    <div id="mentorList"></div>
+  </div>
+</dialog>
+
+<dialog id="deadlinesModal">
+  <div class="modal-head">
+    <h2>📅 UPCOMING DEADLINES</h2>
+    <button data-close>✕</button>
+  </div>
+  <div class="modal-body" id="deadlineList"></div>
+</dialog>
+
+<dialog id="journalModal">
+  <div class="modal-head">
+    <h2>📓 LEARNING JOURNAL</h2>
+    <button data-close>✕</button>
+  </div>
+  <div class="modal-body">
+    <label>What did you learn today?
+      <textarea id="journalText" rows="4"
+        placeholder="Today I made progress on..."></textarea>
+    </label>
+    <button class="btn mint" id="addJournal">+ SAVE ENTRY</button>
+    <div id="journalEntries"></div>
+  </div>
+</dialog>
+
+<dialog id="achievementsModal">
+  <div class="modal-head">
+    <h2>🏆 YOUR ACHIEVEMENTS</h2>
+    <button data-close>✕</button>
+  </div>
+  <div class="modal-body" id="achievementList"></div>
+</dialog>
+
+<dialog id="helpModal">
+  <div class="modal-head">
+    <h2>💬 I'M STUCK</h2>
+    <button data-close>✕</button>
+  </div>
+  <div class="modal-body">
+    <h3 id="helpQuest"></h3>
+    <p>Try breaking this milestone into a 15-minute task.
+      Read a resource, write down the obstacle, or ask a mentor.</p>
+    <label>What's blocking you?
+      <textarea id="helpNote" rows="3"
+        placeholder="I need help with..."></textarea>
+    </label>
+    <button class="btn yellow" id="saveHelp">
+      SAVE QUESTION TO JOURNAL
+    </button>
+    <button class="btn outline" data-switch="resourcesModal">
+      BROWSE RESOURCES
+    </button>
+    <button class="btn outline" data-switch="mentorsModal">
+      FIND A MENTOR
+    </button>
+  </div>
+</dialog>
+
+<div id="toast" role="status" aria-live="polite"></div>
+<script src="hub.js" defer></script>
+</body>
+</html>
