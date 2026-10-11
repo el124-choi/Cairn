@@ -22,28 +22,28 @@
 		.roadmap-main > h1 { margin-bottom: 4px; color: var(--brown); font-size: clamp(22px, 3vw, 34px); text-align: center; text-shadow: 3px 3px 0 var(--shadow); }
 		.intro { color: var(--brown); text-align: center; }
 		.layout { display: grid; grid-template-columns: minmax(0, 900px); justify-content: center; gap: 30px; align-items: start; }
-		.card { width: 100%; padding: 26px; border: 6px solid var(--dark); background: var(--paper); box-shadow: 7px 7px 0 var(--brown); }
+		.card { width: 100%; padding: 26px; border: 6px solid var(--dark); border-radius: 14px; background: var(--paper); box-shadow: 7px 7px 0 var(--brown); }
 		.card h2, #roadmap-title { color: var(--brown); font-size: 13px; line-height: 2; }
 		#request-title, #request-form { text-align: center; }
 		.field { margin-bottom: 22px; }
 		.field > label { display: block; margin-bottom: 7px; font-weight: 700; text-align: center; }
 		.key-field-heading { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 7px; }
 		.key-field-heading label { margin: 0; font-weight: 700; }
-		.key-field-toggle { padding: 5px 8px; border: 3px solid var(--dark); background: var(--mustard); color: var(--dark); font-size: 8px; }
+		.key-field-toggle { padding: 5px 8px; border: 3px solid var(--dark); border-radius: 7px; background: var(--mustard); color: var(--dark); font-size: 8px; }
 		.roadmap-nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 22px; }
 		#roadmaps-button { margin-left: auto; }
-		.nav-button { display: inline-flex; align-items: center; gap: 8px; padding: 12px 16px; border: 4px solid var(--dark); background: var(--terracotta); color: var(--paper); box-shadow: 4px 4px 0 var(--dark); font-size: 9px; line-height: 1.8; transition: transform .15s ease, box-shadow .15s ease, background .15s ease; }
+		.nav-button { display: inline-flex; align-items: center; gap: 8px; padding: 12px 16px; border: 4px solid var(--dark); border-radius: 8px; background: var(--terracotta); color: var(--paper); box-shadow: 4px 4px 0 var(--dark); font-size: 9px; line-height: 1.8; transition: transform .15s ease, box-shadow .15s ease, background .15s ease; }
 		.nav-button:hover { transform: translate(2px, 2px); background: var(--brown); box-shadow: 2px 2px 0 var(--dark); }
 		.nav-button:active { transform: translate(4px, 4px); box-shadow: none; }
 		#gemini-key-field.is-collapsed #gemini-key-content { display: none; }
-		input, textarea { width: 100%; padding: 10px 12px; border: 4px solid var(--dark); border-radius: 0; background: #fff9e8; color: var(--dark); font: inherit; text-align: center; }
+		input, textarea { width: 100%; padding: 10px 12px; border: 4px solid var(--dark); border-radius: 8px; background: #fff9e8; color: var(--dark); font: inherit; text-align: center; }
 		input:focus, textarea:focus, button:focus-visible { outline: 4px solid var(--terracotta); outline-offset: 3px; }
 		textarea { min-height: 140px; resize: vertical; }
 		.key-row { display: flex; justify-content: center; gap: 10px; }
 		#submit-button { display: block; margin: 4px auto 0; }
 		button { cursor: pointer; font-family: 'Press Start 2P', monospace; }
 		button:disabled { cursor: not-allowed; opacity: .58; }
-		.submit, .secondary { padding: 13px 15px; border: 4px solid var(--dark); border-radius: 0; background: var(--mint); color: var(--dark); box-shadow: 4px 4px 0 var(--brown); font-size: 9px; line-height: 1.8; }
+		.submit, .secondary { padding: 13px 15px; border: 4px solid var(--dark); border-radius: 8px; background: var(--mint); color: var(--dark); box-shadow: 4px 4px 0 var(--brown); font-size: 9px; line-height: 1.8; }
 		.submit:hover:not(:disabled), .secondary:hover:not(:disabled) { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--brown); }
 		.secondary { flex: 0 0 auto; background: var(--mustard); }
 		.hint { margin: 6px 0 10px; color: var(--brown); font-size: 20px; text-align: center; }
@@ -54,14 +54,14 @@
 		#status.error { color: #9A3F37; }
 		#roadmap-title { margin-top: 24px; font-size: 16px; overflow-wrap: anywhere; }
 		.timeline { list-style: none; display: flex; align-items: flex-start; gap: 24px; overflow-x: auto; margin: 18px 0 0; padding: 60px 8px 20px; position: relative; scroll-snap-type: x mandatory; }
-		.timeline-track { position: absolute; z-index: 0; top: 73px; left: 34px; height: 7px; min-width: 0; padding: 0; border: 3px solid var(--dark); background: var(--shadow); pointer-events: none; }
+		.timeline-track { position: absolute; z-index: 0; top: 73px; left: 34px; height: 7px; min-width: 0; padding: 0; border: 3px solid var(--dark); border-radius: 999px; background: var(--shadow); pointer-events: none; }
 		.timeline-fill { display: block; width: 0; height: 100%; background: var(--mint); transition: width .25s ease; }
 		.timeline-smiley { position: absolute; top: -43px; left: 0; width: 24px; height: 24px; margin-left: -12px; font-size: 24px; line-height: 24px; text-align: center; transition: left 1.8s cubic-bezier(.2,.8,.2,1); }
 		.timeline-smiley.is-walking { animation: smiley-walk .55s ease-in-out infinite alternate; }
 		@keyframes smiley-walk { to { transform: translateY(-4px) rotate(12deg); } }
 		.timeline-item { position: relative; z-index: 1; flex: 0 0 min(240px, 70vw); display: flex; flex-direction: column; gap: 12px; align-items: stretch; scroll-snap-align: start; }
-		.timeline-item::before { content: "✦"; position: relative; left: 12px; top: 0; width: 28px; height: 28px; display: grid; place-items: center; border: 3px solid var(--dark); background: var(--mustard); color: var(--dark); box-shadow: 3px 3px 0 var(--brown); }
-		.milestone-card { width: 100%; min-height: 112px; padding: 16px; border: 4px solid var(--dark); border-radius: 0; background: var(--mint); color: var(--dark); box-shadow: 5px 5px 0 var(--brown); text-align: left; transition: transform .15s ease, box-shadow .15s ease; }
+		.timeline-item::before { content: "✦"; position: relative; left: 12px; top: 0; width: 28px; height: 28px; display: grid; place-items: center; border: 3px solid var(--dark); border-radius: 8px; background: var(--mustard); color: var(--dark); box-shadow: 3px 3px 0 var(--brown); }
+		.milestone-card { width: 100%; min-height: 112px; padding: 16px; border: 4px solid var(--dark); border-radius: 10px; background: var(--mint); color: var(--dark); box-shadow: 5px 5px 0 var(--brown); text-align: left; transition: transform .15s ease, box-shadow .15s ease; }
 		.timeline-item:nth-of-type(3n) .milestone-card { background: var(--mustard); }
 		.timeline-item:nth-of-type(4n) .milestone-card { background: var(--coral); }
 		.milestone-card:hover { transform: translate(2px, 2px); box-shadow: 3px 3px 0 var(--brown); }
@@ -69,19 +69,30 @@
 		.milestone-card strong { font-family: 'Press Start 2P', monospace; font-size: 9px; line-height: 1.8; overflow-wrap: anywhere; }
 		.milestone-step { margin-bottom: 6px; color: var(--brown); font-size: 18px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
 		.milestone-due { margin-top: 8px; color: var(--brown); font-size: 19px; }
-		.completion { display: flex; align-items: center; gap: 8px; align-self: flex-start; margin: 0; padding: 7px 9px; border: 3px solid var(--dark); background: var(--mustard); color: var(--dark); box-shadow: 3px 3px 0 var(--brown); font-size: 19px; white-space: nowrap; }
-		.completion input { width: 18px; height: 18px; margin: 0; padding: 0; accent-color: var(--green); }
+		.completion { display: flex; align-items: center; gap: 8px; align-self: flex-start; margin: 0; padding: 7px 9px; border: 3px solid var(--dark); border-radius: 8px; background: var(--mustard); color: var(--dark); box-shadow: 3px 3px 0 var(--brown); font-size: 19px; white-space: nowrap; }
+		.completion input { width: 18px; height: 18px; margin: 0; padding: 0; border-radius: 4px; accent-color: var(--green); }
 		.timeline-item.is-done::before { content: "✓"; background: var(--green); color: var(--paper); }
+		.timeline-item.is-done:not(.is-smiley-position)::after { content: "🪨"; position: absolute; z-index: 2; top: -25px; left: 14px; font-size: 18px; line-height: 1; }
 		.timeline-item.is-done .milestone-card { border-color: var(--dark); background: #C8D9B8; }
 		.timeline-item.is-done .milestone-card strong { color: #426F4C; text-decoration: line-through; }
 		.timeline-item.is-current::before { background: var(--terracotta); color: var(--paper); box-shadow: 3px 3px 0 var(--dark); }
-		dialog { width: min(460px, calc(100% - 32px)); padding: 0; border: 6px solid var(--dark); border-radius: 0; background: var(--paper); color: var(--dark); box-shadow: 8px 8px 0 var(--brown); }
+		dialog { width: min(460px, calc(100% - 32px)); padding: 0; border: 6px solid var(--dark); border-radius: 14px; background: var(--paper); color: var(--dark); box-shadow: 8px 8px 0 var(--brown); }
 		dialog::backdrop { background: #211B18C9; }
 		.dialog-content { position: relative; padding: 28px; }
-		.dialog-close { position: absolute; top: 12px; right: 12px; padding: 7px 10px; border: 3px solid var(--dark); background: var(--mustard); color: var(--dark); font-size: 10px; }
+		.dialog-close { position: absolute; top: 12px; right: 12px; padding: 7px 10px; border: 3px solid var(--dark); border-radius: 7px; background: var(--mustard); color: var(--dark); font-size: 10px; }
 		#dialog-title { margin: 22px 0 8px; color: var(--brown); font-size: 12px; overflow-wrap: anywhere; }
 		#dialog-due { color: var(--terracotta); font-weight: 700; }
 		#dialog-description { white-space: pre-wrap; }
+		#help-button { position: fixed; z-index: 20; top: 20px; right: 24px; display: grid; place-items: center; width: 48px; height: 48px; padding: 0; border: 4px solid var(--dark); border-radius: 50%; background: var(--mustard); color: var(--dark); box-shadow: 4px 4px 0 var(--brown); font-size: 15px; }
+		#help-button:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--brown); }
+		#help-dialog { width: min(520px, calc(100% - 32px)); }
+		#help-dialog h2 { margin: 16px 0; color: var(--brown); font-size: 13px; }
+		#help-question { min-height: 150px; text-align: left; }
+		.help-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; min-width: 0; margin: 18px 0; padding: 0; border: 0; }
+		.help-option { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 8px; border: 3px solid var(--dark); border-radius: 8px; background: #fff9e8; color: var(--dark); font-size: 9px; cursor: pointer; }
+		.help-option:has(input:checked) { background: var(--mint); box-shadow: 3px 3px 0 var(--brown); }
+		.help-option input { width: auto; margin: 0; padding: 0; border: 0; accent-color: var(--green); }
+		@media (max-width: 430px) { #help-button { top: 12px; right: 14px; width: 42px; height: 42px; } .help-options { grid-template-columns: 1fr; } }
 		@media (max-width: 760px) { .roadmap-main { width: 92%; padding-top: 24px; } .layout { grid-template-columns: minmax(0, 1fr); gap: 24px; } }
 		@media (max-width: 430px) { .card { padding: 18px; } .timeline-item { flex-basis: min(220px, 76vw); } .key-row { align-items: stretch; } .submit, .secondary { font-size: 8px; } }
 		@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; } }
@@ -89,6 +100,7 @@
 </head>
 <body>
 	<div class="website">
+	<button id="help-button" type="button" aria-label="Open help options" aria-haspopup="dialog">?</button>
 	<main class="roadmap-main">
 		  <div class="roadmap-nav">
 
@@ -107,6 +119,10 @@
 					<div class="field">
 						<label for="course">Course</label>
 						<input id="course" type="text" autocomplete="off" placeholder="e.g. Computer Science">
+					</div>
+					<div class="field">
+						<label for="year-group">Year group (optional)</label>
+						<input id="year-group" type="text" autocomplete="off" placeholder="e.g. Year 12">
 					</div>
 					<div class="field">
 						<label for="due-date">Entry Year</label>
@@ -132,11 +148,12 @@
 			<section class="card" aria-labelledby="response-title">
 				<div class="output-head">
 					<h2 id="response-title">Response</h2>
+					<button id="add-milestone-button" class="submit" type="button" disabled>+ Add milestone</button>
 				</div>
 				<p id="status" role="status" aria-live="polite">Your roadmap will appear here.</p>
 				<h3 id="roadmap-title"></h3>
 				<ol id="output" class="timeline" aria-label="Roadmap timeline">
-					<li id="timeline-track" class="timeline-track" role="progressbar" aria-label="Milestone progress" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0"><span id="timeline-fill" class="timeline-fill"></span><span id="timeline-smiley" class="timeline-smiley" role="img" aria-label="Smiley at the start of the timeline" hidden>🙂</span></li>
+					<li id="timeline-track" class="timeline-track" role="progressbar" aria-label="Milestone progress" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0"><span id="timeline-fill" class="timeline-fill"></span><span id="timeline-smiley" class="timeline-smiley" role="img" aria-label="Smiley at the start of the timeline" hidden>🚶‍➡️</span></li>
 				</ol>
 			</section>
 		</div>
@@ -150,6 +167,42 @@
 			<p id="dialog-description"></p>
 		</div>
 	</dialog>
+	<dialog id="add-milestone-dialog" aria-labelledby="add-milestone-title">
+		<div class="dialog-content">
+			<button class="dialog-close" id="close-add-milestone" type="button" aria-label="Close add milestone form">×</button>
+			<h2 id="add-milestone-title">Add a custom milestone</h2>
+			<form id="add-milestone-form">
+				<div class="field">
+					<label for="custom-milestone-name">Milestone name</label>
+					<input id="custom-milestone-name" type="text" maxlength="120" required>
+				</div>
+				<div class="field">
+					<label for="custom-milestone-date">Date</label>
+					<input id="custom-milestone-date" type="date" required>
+				</div>
+				<div class="field">
+					<label for="custom-milestone-description">Description</label>
+					<textarea id="custom-milestone-description" required></textarea>
+				</div>
+				<button class="submit" type="submit">Save milestone</button>
+			</form>
+		</div>
+	</dialog>
+	<dialog id="help-dialog" aria-labelledby="help-title">
+		<div class="dialog-content">
+			<button class="dialog-close" id="close-help" type="button" aria-label="Close help">×</button>
+			<h2 id="help-title">Help</h2>
+			<form id="help-form">
+				<textarea id="help-question" placeholder="Your question here..." required></textarea>
+				<fieldset class="help-options" aria-label="Who to ask?">
+					<label class="help-option"><input type="radio" name="help-choice" value="ai" checked> Ask AI</label>
+					<label class="help-option"><input type="radio" name="help-choice" value="person"> Ask a person</label>
+				</fieldset>
+				<button class="submit" type="submit">Submit question</button>
+				<p id="help-status" role="status" aria-live="polite"></p>
+			</form>
+		</div>
+	</dialog>
 	<script>
 		const form = document.querySelector('#request-form');
 		document.querySelector('#back-button').addEventListener('click', () => {
@@ -159,12 +212,17 @@
 		const keyInput = document.querySelector('#api-key');
 		const promptInput = document.querySelector('#prompt');
 		const courseInput = document.querySelector('#course');
+		const yearGroupInput = document.querySelector('#year-group');
 		const dueDateInput = document.querySelector('#due-date');
 		const submitButton = document.querySelector('#submit-button');
 		const output = document.querySelector('#output');
 		const roadmapTitle = document.querySelector('#roadmap-title');
 		const status = document.querySelector('#status');
 		const milestoneDialog = document.querySelector('#milestone-dialog');
+		const addMilestoneButton = document.querySelector('#add-milestone-button');
+		const addMilestoneDialog = document.querySelector('#add-milestone-dialog');
+		const addMilestoneForm = document.querySelector('#add-milestone-form');
+		const helpDialog = document.querySelector('#help-dialog');
 		const dialogTitle = document.querySelector('#dialog-title');
 		const dialogDue = document.querySelector('#dialog-due');
 		const dialogDescription = document.querySelector('#dialog-description');
@@ -224,8 +282,53 @@
 		});
 
 		document.querySelector('#close-dialog').addEventListener('click', () => milestoneDialog.close());
+		document.querySelector('#help-button').addEventListener('click', () => helpDialog.showModal());
+		document.querySelector('#close-help').addEventListener('click', () => helpDialog.close());
+		helpDialog.addEventListener('click', (event) => {
+			if (event.target === helpDialog) helpDialog.close();
+		});
+		document.querySelector('#help-form').addEventListener('submit', (event) => {
+			event.preventDefault();
+			const question = document.querySelector('#help-question').value.trim();
+			if (!question) return;
+			const selectedOption = document.querySelector('input[name="help-choice"]:checked').value;
+			document.querySelector('#help-status').textContent = selectedOption === 'ai'
+				? 'Your question is ready for Ask AI.'
+				: 'Your question is ready for Ask a person.';
+		});
 		milestoneDialog.addEventListener('click', (event) => {
 			if (event.target === milestoneDialog) milestoneDialog.close();
+		});
+		addMilestoneButton.addEventListener('click', () => {
+			if (!generatedRoadmap) return;
+			addMilestoneDialog.showModal();
+			document.querySelector('#custom-milestone-name').focus();
+		});
+		document.querySelector('#close-add-milestone').addEventListener('click', () => addMilestoneDialog.close());
+		addMilestoneDialog.addEventListener('click', (event) => {
+			if (event.target === addMilestoneDialog) addMilestoneDialog.close();
+		});
+		addMilestoneForm.addEventListener('submit', (event) => {
+			event.preventDefault();
+			if (!generatedRoadmap) return;
+
+			const title = document.querySelector('#custom-milestone-name').value.trim();
+			const [year, month, day] = document.querySelector('#custom-milestone-date').value.split('-');
+			const description = document.querySelector('#custom-milestone-description').value.trim();
+			if (!title || !year || !month || !day || !description) return;
+
+			generatedRoadmap.milestones.push({
+				title,
+				due: `${day}-${month}-${year}`,
+				description,
+				done: false
+			});
+			saveRoadmap();
+			renderTimeline();
+			addMilestoneForm.reset();
+			addMilestoneDialog.close();
+			status.textContent = `Added milestone: ${title}.`;
+			status.className = 'success';
 		});
 
 		form.addEventListener('submit', async (event) => {
@@ -233,6 +336,7 @@
 
 			submitButton.disabled = true;
 			generatedRoadmap = null;
+			addMilestoneButton.disabled = true;
 			clearSavedRoadmap();
 			submitButton.textContent = 'Generating…';
 			status.textContent = 'Requesting structured output from Gemini…';
@@ -245,8 +349,11 @@
 			try {
 				const [year, month, day] = dueDateInput.value.split('-');
 				const dueDate = `${day}-${month}-${year}`;
-				const courseContext = courseInput.value.trim() ? `\n\nCourse: ${courseInput.value.trim()}. Tailor the milestones to this course.` : '';
-				const roadmapPrompt = `${promptInput.value.trim()}${courseContext}\n\nTarget completion date: ${dueDate}. Create realistic milestones that lead to this date, and provide each milestone's due date in DD-MM-YYYY format.`;
+				const context = [
+					courseInput.value.trim() ? `Course: ${courseInput.value.trim()}.` : '',
+					yearGroupInput.value.trim() ? `Year group: ${yearGroupInput.value.trim()}.` : ''
+				].filter(Boolean).join('\n');
+				const roadmapPrompt = `${promptInput.value.trim()}${context ? `\n\n${context}` : ''}\n\nTarget completion date: ${dueDate}. Create realistic milestones that lead to this date, and provide each milestone's due date in DD-MM-YYYY format.`;
 				const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=' + encodeURIComponent(keyInput.value.trim());
 				const response = await fetch(url, {
 					method: 'POST',
@@ -284,6 +391,8 @@
 		});
 
 		function renderTimeline() {
+			addMilestoneButton.disabled = !generatedRoadmap;
+			sortMilestonesByDate();
 			output.replaceChildren(timelineTrack);
 			for (const [index, milestone] of generatedRoadmap.milestones.entries()) {
 				const item = document.createElement('li');
@@ -341,6 +450,7 @@
 			const doneCount = milestones.filter((milestone) => milestone.done).length;
 			const currentIndex = milestones.findIndex((milestone) => !milestone.done);
 			const lastCompletedIndex = milestones.reduce((lastDone, milestone, index) => milestone.done ? index : lastDone, -1);
+			const smileyIndex = lastCompletedIndex < 0 ? 0 : lastCompletedIndex;
 			const lastItem = items[items.length - 1];
 
 			if (items.length && lastItem) {
@@ -353,7 +463,6 @@
 			}
 			if (items.length) {
 				const firstCenter = items[0].offsetLeft + 26;
-				const smileyIndex = lastCompletedIndex < 0 ? 0 : lastCompletedIndex;
 				const smileyItem = items[smileyIndex] || items[0];
 				timelineSmiley.style.left = `${smileyItem.offsetLeft + 26 - firstCenter}px`;
 				timelineSmiley.setAttribute('aria-label', lastCompletedIndex < 0
@@ -377,16 +486,50 @@
 			timelineTrack.setAttribute('aria-valuenow', doneCount);
 			for (const [index, item] of items.entries()) {
 				item.classList.toggle('is-current', index === currentIndex);
+				item.classList.toggle('is-smiley-position', index === smileyIndex);
 				item.querySelector('input[type="checkbox"]').disabled = index !== currentIndex;
 			}
 		}
 
 		function saveRoadmap() {
 			try {
+				sortMilestonesByDate();
 				localStorage.setItem(ROADMAP_STORAGE_KEY, JSON.stringify(generatedRoadmap));
 			} catch (error) {
 				console.warn('Could not save the roadmap in this browser.', error);
 			}
+		}
+
+		function sortMilestonesByDate() {
+			if (!Array.isArray(generatedRoadmap?.milestones)) return;
+			generatedRoadmap.milestones.sort((first, second) => {
+				const firstDate = parseMilestoneDate(first.due);
+				const secondDate = parseMilestoneDate(second.due);
+				if (firstDate === null && secondDate === null) return 0;
+				if (firstDate === null) return 1;
+				if (secondDate === null) return -1;
+				return firstDate - secondDate;
+			});
+		}
+
+		function parseMilestoneDate(value) {
+			if (typeof value !== 'string') return null;
+			const dateText = value.trim();
+			let year, month, day;
+			let match = dateText.match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{4})$/);
+			if (match) [, day, month, year] = match;
+			else {
+				match = dateText.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+				if (!match) return null;
+				[, year, month, day] = match;
+			}
+			year = Number(year);
+			month = Number(month);
+			day = Number(day);
+			if (month < 1 || month > 12 || day < 1 || day > 31) return null;
+			const parsed = new Date(Date.UTC(year, month - 1, day));
+			if (parsed.getUTCFullYear() !== year || parsed.getUTCMonth() !== month - 1 || parsed.getUTCDate() !== day) return null;
+			return parsed.getTime();
 		}
 
 		function clearSavedRoadmap() {
@@ -402,6 +545,8 @@
 				const saved = JSON.parse(localStorage.getItem(ROADMAP_STORAGE_KEY));
 				if (!saved || !Array.isArray(saved.milestones)) return;
 				generatedRoadmap = saved;
+				sortMilestonesByDate();
+				saveRoadmap();
 				roadmapTitle.textContent = saved.title || 'Roadmap';
 				renderTimeline();
 				status.textContent = 'Saved roadmap restored. Your progress is ready to continue.';
