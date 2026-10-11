@@ -1,201 +1,776 @@
 
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Journey Hub</title>
+
+  <title>STARLING | Journey Hub</title>
+
   <link rel="stylesheet" href="hub.css">
+  <script src="hub.js" defer></script>
 </head>
+
 <body>
+
+<!-- ==========================================
+     PIXEL ART ICON LIBRARY
+     Reusable SVG sprites
+========================================== -->
+
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="0"
+     height="0"
+     aria-hidden="true"
+     style="position:absolute;pointer-events:none">
+
+  <defs>
+
+    <!-- BOOK -->
+    <symbol id="icon-book" viewBox="0 0 32 32">
+      <path fill="#342820"
+        d="M3 6h11v3h4V6h11v21H18v2h-4v-2H3z"/>
+      <path fill="#f6d77a"
+        d="M6 9h8v15H6z"/>
+      <path fill="#b8dfc3"
+        d="M18 9h8v15h-8z"/>
+      <path fill="#342820"
+        d="M8 12h5v2H8zm0 5h5v2H8zm11-5h5v2h-5zm0 5h5v2h-5z"/>
+    </symbol>
+
+    <!-- TWO PLAYER MENTORS -->
+    <symbol id="icon-mentors" viewBox="0 0 32 32">
+      <path fill="#342820"
+        d="M4 5h10v11H4zm14 0h10v11H18zM2 19h14v10H2zm14 0h14v10H16z"/>
+      <path fill="#f5a58e"
+        d="M7 8h5v6H7z"/>
+      <path fill="#f6d77a"
+        d="M20 8h5v6h-5z"/>
+      <path fill="#b8dfc3"
+        d="M5 22h9v5H5z"/>
+      <path fill="#f5a58e"
+        d="M18 22h9v5h-9z"/>
+      <path fill="#342820"
+        d="M8 10h2v2H8zm13 0h2v2h-2z"/>
+    </symbol>
+
+    <!-- CALENDAR -->
+    <symbol id="icon-calendar" viewBox="0 0 32 32">
+      <path fill="#342820"
+        d="M4 5h24v24H4z"/>
+      <path fill="#fff9eb"
+        d="M7 12h18v14H7z"/>
+      <path fill="#f5a58e"
+        d="M7 8h18v5H7z"/>
+      <path fill="#342820"
+        d="M10 3h4v8h-4zm9 0h4v8h-4zM10 16h4v4h-4zm8 0h4v4h-4zm-8 6h4v3h-4z"/>
+    </symbol>
+
+    <!-- JOURNAL -->
+    <symbol id="icon-journal" viewBox="0 0 32 32">
+      <path fill="#342820"
+        d="M5 3h23v26H5z"/>
+      <path fill="#f5a58e"
+        d="M9 6h16v20H9z"/>
+      <path fill="#fff9eb"
+        d="M12 10h10v3H12zm0 6h10v2H12zm0 5h7v2h-7z"/>
+      <path fill="#342820"
+        d="M3 8h8v3H3zm0 8h8v3H3zm0 8h8v3H3z"/>
+    </symbol>
+
+    <!-- TROPHY -->
+    <symbol id="icon-trophy" viewBox="0 0 32 32">
+      <path fill="#342820"
+        d="M8 4h16v3h6v12h-6v3h-5v4h6v3H7v-3h6v-4H8v-3H2V7h6z"/>
+      <path fill="#f6d77a"
+        d="M11 7h10v12H11zM5 10h3v6H5zm19 0h3v6h-3z"/>
+      <path fill="#fff9eb"
+        d="M14 9h4v3h-4z"/>
+    </symbol>
+
+    <!-- HELP / QUESTION -->
+    <symbol id="icon-help" viewBox="0 0 32 32">
+      <path fill="#342820"
+        d="M8 3h16v3h4v5h3v11h-3v5h-8v4h-8v-4H4v-5H1V11h3V6h4z"/>
+      <path fill="#b8dfc3"
+        d="M9 7h14v3h4v12h-4v3H9v-3H5V10h4z"/>
+      <path fill="#342820"
+        d="M13 10h7v3h3v4h-4v3h-5v-5h5v-2h-6zm1 12h5v4h-5z"/>
+    </symbol>
+
+    <!-- PIXEL STAR -->
+    <symbol id="icon-star" viewBox="0 0 32 32">
+      <path fill="#342820"
+        d="M13 2h6v8h8v5h5v6h-9v9H9v-9H0v-6h5v-5h8z"/>
+      <path fill="#f6d77a"
+        d="M14 7h4v7h8v5h-8v8h-4v-8H6v-5h8z"/>
+    </symbol>
+
+    <!-- FLAG -->
+    <symbol id="icon-flag" viewBox="0 0 32 32">
+      <path fill="#342820"
+        d="M5 2h4v28H5zM9 4h19v15H9z"/>
+      <path fill="#f5a58e"
+        d="M11 7h14v9H11z"/>
+      <path fill="#fff9eb"
+        d="M14 9h5v5h-5z"/>
+    </symbol>
+
+    <!-- LOCK -->
+    <symbol id="icon-lock" viewBox="0 0 32 32">
+      <path fill="#342820"
+        d="M9 3h14v4h4v9h3v14H2V16h3V7h4z"/>
+      <path fill="#fff9eb"
+        d="M11 8h10v9H11z"/>
+      <path fill="#b8dfc3"
+        d="M6 19h20v8H6z"/>
+      <path fill="#342820"
+        d="M14 21h4v4h-4z"/>
+    </symbol>
+
+    <!-- CHECK -->
+    <symbol id="icon-check" viewBox="0 0 32 32">
+      <path fill="#342820"
+        d="M3 15h6v5h5v-5h5v-5h5V5h6v10h-5v5h-5v5h-5v5H9v-5H4v-5H1v-5z"/>
+      <path fill="#b8dfc3"
+        d="M5 16h4v5h5v-5h5v-5h5V7h3v7h-5v5h-5v5h-6v-5H5z"/>
+    </symbol>
+
+    <!-- SPARK / XP -->
+    <symbol id="icon-xp" viewBox="0 0 32 32">
+      <path fill="#342820"
+        d="M13 1h6v9h9v5h4v6h-9v10H9V21H0v-6h5v-5h8z"/>
+      <path fill="#f6d77a"
+        d="M14 5h4v9h9v4h-9v9h-4v-9H5v-4h9z"/>
+    </symbol>
+
+  </defs>
+</svg>
+
+
+<!-- ==========================================
+     TOP NAVIGATION
+========================================== -->
+
 <header class="top">
-  <a href="homepage.html" class="brand">✦ STARLING</a>
+
+  <a href="homepage.html" class="brand">
+    ✦ STARLING
+  </a>
+
   <nav>
-    <a href="roadmap.html">ROADMAP ↗</a>
-    <button id="resetDemo" class="small">RESET DEMO</button>
+    <a href="roadmapPage.html">
+      ROADMAP ↗
+    </a>
+
+    <button id="resetDemo" class="small">
+      RESET DEMO
+    </button>
   </nav>
+
 </header>
 
+
 <main class="shell">
+
+  <!-- ========================================
+       HUB TITLE
+  ======================================== -->
+
   <div class="headline">
+
     <div>
-      <p class="eyebrow">YOUR ADVENTURE STARTS HERE</p>
-      <h1>MY JOURNEY HUB <span>✦</span></h1>
-      <p id="subtitle">Build skills. Complete quests. Level up.</p>
+      <p class="eyebrow">
+        PLAYER ONE / ADVENTURE MODE
+      </p>
+
+      <h1>
+        MY JOURNEY HUB
+        <span>✦</span>
+      </h1>
+
+      <p id="subtitle">
+        Build skills. Complete quests. Level up.
+      </p>
     </div>
-    <div class="pill" id="streak">🔥 0 DAY STREAK</div>
+
+    <div class="pill" id="streak">
+      0 DAY STREAK
+    </div>
+
   </div>
 
+
+  <!-- ========================================
+       PLAYER PROFILE + QUEST DASHBOARD
+  ======================================== -->
+
   <section class="hero">
+
+    <!-- PLAYER PROFILE -->
+
     <article class="panel profile">
+
       <div class="sectionhead">
         <h2>YOUR EXPLORER</h2>
-        <span class="tag" id="levelBadge">LVL 1</span>
+
+        <span class="tag" id="levelBadge">
+          LVL 1
+        </span>
       </div>
+
       <div class="avatar-stage">
-        <svg id="avatar" viewBox="0 0 180 210"
-          role="img" aria-label="Your customised pixel character"
-          shape-rendering="crispEdges"></svg>
+
+        <svg
+          id="avatar"
+          viewBox="0 0 180 210"
+          xmlns="http://www.w3.org/2000/svg"
+          role="img"
+          aria-label="Your customised character"
+          shape-rendering="crispEdges">
+        </svg>
+
       </div>
-      <p class="avatar-name" id="avatarName">Explorer</p>
-      <a href="avatar.html?return=hub.html" class="btn yellow">
-        ✎ EDIT AVATAR
+
+      <p class="avatar-name" id="avatarName">
+        Explorer
+      </p>
+
+      <a
+        href="avatar.html?return=hub.html"
+        class="btn yellow avatar-edit-link">
+        EDIT CHARACTER ↗
       </a>
+
       <div class="xp-line">
-        <span id="xpLabel">0 / 100 XP</span>
-        <span>LEVEL PROGRESS</span>
+        <span id="xpLabel">
+          0 / 200 XP
+        </span>
+
+        <span>
+          LEVEL PROGRESS
+        </span>
       </div>
-      <div class="meter"><div id="xpFill"></div></div>
+
+      <div class="meter">
+        <div id="xpFill"></div>
+      </div>
+
     </article>
+
+
+    <!-- QUEST DASHBOARD -->
 
     <article class="panel overview">
+
       <div class="sectionhead">
-        <h2>YOUR PROGRESS</h2>
-        <span class="tag">MAIN QUEST</span>
+
+        <h2>QUEST PROGRESS</h2>
+
+        <span class="tag">
+          MAIN QUEST
+        </span>
+
       </div>
-      <div class="progress-number" id="progressPct">0%</div>
-      <div class="meter big"><div id="progressFill"></div></div>
-      <p id="progressDescription">0 of 0 milestones complete</p>
+
+      <div class="progress-number" id="progressPct">
+        0%
+      </div>
+
+      <div class="meter big">
+        <div id="progressFill"></div>
+      </div>
+
+      <p id="progressDescription">
+        0 of 0 milestones complete
+      </p>
+
       <div class="stat-grid">
-        <div><b id="completedStat">0</b><span>COMPLETED</span></div>
-        <div><b id="totalStat">0</b><span>TOTAL QUESTS</span></div>
-        <div><b id="badgeStat">0</b><span>BADGES</span></div>
+
+        <div>
+          <b id="completedStat">0</b>
+          <span>COMPLETED</span>
+        </div>
+
+        <div>
+          <b id="totalStat">0</b>
+          <span>TOTAL QUESTS</span>
+        </div>
+
+        <div>
+          <b id="badgeStat">0</b>
+          <span>BADGES</span>
+        </div>
+
       </div>
+
+
+      <!-- NEXT QUEST -->
+
       <div class="sectionhead">
+
         <h3>NEXT QUEST</h3>
-        <span class="tag" id="questNumber">#01</span>
+
+        <span class="tag" id="questNumber">
+          #01
+        </span>
+
       </div>
-      <h3 id="nextQuestTitle">Your journey begins here</h3>
-      <p id="nextQuestDesc">Create a roadmap to get started.</p>
+
+      <h3 id="nextQuestTitle">
+        Your journey begins here
+      </h3>
+
+      <p id="nextQuestDesc">
+        Create a roadmap to get started.
+      </p>
+
       <p class="due" id="nextQuestDue"></p>
+
       <div class="actions">
-        <button id="completeQuest" class="btn mint">
-          ✓ COMPLETE QUEST
+
+        <button
+          id="completeQuest"
+          class="btn mint">
+
+          COMPLETE QUEST
         </button>
-        <button class="btn outline" id="questHelp">I'M STUCK?</button>
+
+        <button
+          id="questHelp"
+          class="btn outline">
+
+          NEED HELP?
+        </button>
+
       </div>
+
     </article>
+
   </section>
+
+
+  <!-- ========================================
+       JOURNEY MAP
+  ======================================== -->
 
   <section class="panel map-panel">
+
     <div class="sectionhead">
-      <h2>✦ YOUR JOURNEY MAP</h2>
-      <a href="roadmap.html" class="btn small yellow">
+
+      <h2>
+        ✦ YOUR JOURNEY MAP
+      </h2>
+
+      <a
+        href="roadmapPage.html"
+        class="btn small yellow">
+
         FULL ROADMAP ↗
       </a>
+
     </div>
+
+    <p class="map-intro">
+      Follow your quests, unlock milestones
+      and reach your next checkpoint.
+    </p>
+
     <div class="journey" id="journey"></div>
+
   </section>
 
-  <section class="tiles">
-    <button class="tile" data-open="resourcesModal">
-      <span>📚</span><b>RESOURCE LIBRARY</b>
-      <small>Tools for your next step</small>
-    </button>
-    <button class="tile" data-open="mentorsModal">
-      <span>🤝</span><b>FIND A MENTOR</b>
-      <small>Get guidance from others</small>
-    </button>
-    <button class="tile" data-open="deadlinesModal">
-      <span>📅</span><b>DEADLINES</b>
-      <small>Stay ahead of your quests</small>
-    </button>
-    <button class="tile" data-open="journalModal">
-      <span>📓</span><b>LEARNING JOURNAL</b>
-      <small>Record your wins</small>
-    </button>
-    <button class="tile" data-open="achievementsModal">
-      <span>🏆</span><b>ACHIEVEMENTS</b>
-      <small>Collect your badges</small>
-    </button>
-    <button class="tile" data-open="helpModal">
-      <span>💬</span><b>I'M STUCK</b>
-      <small>Find your next step</small>
-    </button>
+
+  <!-- ========================================
+       GAME MENU
+  ======================================== -->
+
+  <section class="game-menu-section">
+
+    <div class="sectionhead">
+
+      <h2>✦ EXPLORER'S MENU</h2>
+
+      <span class="tag">
+        SELECT A MODE
+      </span>
+
+    </div>
+
+    <section class="tiles">
+
+      <!-- RESOURCES -->
+
+      <button
+        class="tile"
+        data-open="resourcesModal">
+
+        <span class="pixel-icon">
+          <svg viewBox="0 0 32 32" aria-hidden="true">
+            <use href="#icon-book"></use>
+          </svg>
+        </span>
+
+        <b>RESOURCE LIBRARY</b>
+
+        <small>
+          Equip yourself for the next quest
+        </small>
+
+      </button>
+
+
+      <!-- MENTORS -->
+
+      <button
+        class="tile"
+        data-open="mentorsModal">
+
+        <span class="pixel-icon">
+          <svg viewBox="0 0 32 32" aria-hidden="true">
+            <use href="#icon-mentors"></use>
+          </svg>
+        </span>
+
+        <b>FIND A MENTOR</b>
+
+        <small>
+          Meet your fellow adventurers
+        </small>
+
+      </button>
+
+
+      <!-- DEADLINES -->
+
+      <button
+        class="tile"
+        data-open="deadlinesModal">
+
+        <span class="pixel-icon">
+          <svg viewBox="0 0 32 32" aria-hidden="true">
+            <use href="#icon-calendar"></use>
+          </svg>
+        </span>
+
+        <b>DEADLINES</b>
+
+        <small>
+          Keep track of your checkpoints
+        </small>
+
+      </button>
+
+
+      <!-- JOURNAL -->
+
+      <button
+        class="tile"
+        data-open="journalModal">
+
+        <span class="pixel-icon">
+          <svg viewBox="0 0 32 32" aria-hidden="true">
+            <use href="#icon-journal"></use>
+          </svg>
+        </span>
+
+        <b>LEARNING JOURNAL</b>
+
+        <small>
+          Save your discoveries and wins
+        </small>
+
+      </button>
+
+
+      <!-- ACHIEVEMENTS -->
+
+      <button
+        class="tile"
+        data-open="achievementsModal">
+
+        <span class="pixel-icon">
+          <svg viewBox="0 0 32 32" aria-hidden="true">
+            <use href="#icon-trophy"></use>
+          </svg>
+        </span>
+
+        <b>ACHIEVEMENTS</b>
+
+        <small>
+          View your unlocked rewards
+        </small>
+
+      </button>
+
+
+      <!-- HELP -->
+
+      <button
+        class="tile"
+        data-open="helpModal">
+
+        <span class="pixel-icon">
+          <svg viewBox="0 0 32 32" aria-hidden="true">
+            <use href="#icon-help"></use>
+          </svg>
+        </span>
+
+        <b>I'M STUCK</b>
+
+        <small>
+          Get help with your next mission
+        </small>
+
+      </button>
+
+    </section>
+
   </section>
-  <footer>YOUR STORY IS STILL BEING WRITTEN ✦</footer>
+
+
+  <footer>
+    YOUR STORY IS STILL BEING WRITTEN ✦
+  </footer>
+
 </main>
 
 
+<!-- ==========================================
+     RESOURCE LIBRARY MODAL
+========================================== -->
+
 <dialog id="resourcesModal">
+
   <div class="modal-head">
-    <h2>📚 RESOURCE LIBRARY</h2>
-    <button data-close>✕</button>
+
+    <h2>
+      RESOURCE LIBRARY
+    </h2>
+
+    <button data-close aria-label="Close">
+      X
+    </button>
+
   </div>
+
   <div class="modal-body">
-    <p>Useful starting points for learning and building projects.</p>
+
+    <p>
+      Discover tools and resources to help
+      you complete your next quest.
+    </p>
+
     <div id="resourceList"></div>
+
   </div>
+
 </dialog>
+
+
+<!-- ==========================================
+     MENTORS MODAL
+========================================== -->
 
 <dialog id="mentorsModal">
+
   <div class="modal-head">
-    <h2>🤝 FIND A MENTOR</h2>
-    <button data-close>✕</button>
+
+    <h2>
+      FIND A MENTOR
+    </h2>
+
+    <button data-close aria-label="Close">
+      X
+    </button>
+
   </div>
+
   <div class="modal-body">
-    <p>Sample mentor profiles for the demo. No real messages are sent.</p>
+
+    <p>
+      Find experienced adventurers who can
+      guide you along your journey.
+    </p>
+
     <div id="mentorList"></div>
+
   </div>
+
 </dialog>
+
+
+<!-- ==========================================
+     DEADLINES MODAL
+========================================== -->
 
 <dialog id="deadlinesModal">
+
   <div class="modal-head">
-    <h2>📅 UPCOMING DEADLINES</h2>
-    <button data-close>✕</button>
+
+    <h2>
+      UPCOMING CHECKPOINTS
+    </h2>
+
+    <button data-close aria-label="Close">
+      X
+    </button>
+
   </div>
+
   <div class="modal-body" id="deadlineList"></div>
+
 </dialog>
+
+
+<!-- ==========================================
+     LEARNING JOURNAL MODAL
+========================================== -->
 
 <dialog id="journalModal">
+
   <div class="modal-head">
-    <h2>📓 LEARNING JOURNAL</h2>
-    <button data-close>✕</button>
+
+    <h2>
+      ADVENTURE JOURNAL
+    </h2>
+
+    <button data-close aria-label="Close">
+      X
+    </button>
+
   </div>
+
   <div class="modal-body">
-    <label>What did you learn today?
-      <textarea id="journalText" rows="4"
-        placeholder="Today I made progress on..."></textarea>
+
+    <label for="journalText">
+      WHAT DID YOU DISCOVER TODAY?
     </label>
-    <button class="btn mint" id="addJournal">+ SAVE ENTRY</button>
+
+    <textarea
+      id="journalText"
+      rows="4"
+      placeholder="Today I made progress on..."></textarea>
+
+    <button
+      class="btn mint"
+      id="addJournal">
+
+      + SAVE ENTRY
+    </button>
+
     <div id="journalEntries"></div>
+
   </div>
+
 </dialog>
+
+
+<!-- ==========================================
+     ACHIEVEMENTS MODAL
+========================================== -->
 
 <dialog id="achievementsModal">
+
   <div class="modal-head">
-    <h2>🏆 YOUR ACHIEVEMENTS</h2>
-    <button data-close>✕</button>
+
+    <h2>
+      TROPHY ROOM
+    </h2>
+
+    <button data-close aria-label="Close">
+      X
+    </button>
+
   </div>
-  <div class="modal-body" id="achievementList"></div>
+
+  <div class="modal-body">
+
+    <p>
+      Complete quests, gain experience and
+      unlock achievements.
+    </p>
+
+    <div id="achievementList"></div>
+
+  </div>
+
 </dialog>
+
+
+<!-- ==========================================
+     HELP MODAL
+========================================== -->
 
 <dialog id="helpModal">
+
   <div class="modal-head">
-    <h2>💬 I'M STUCK</h2>
-    <button data-close>✕</button>
-  </div>
-  <div class="modal-body">
-    <h3 id="helpQuest"></h3>
-    <p>Try breaking this milestone into a 15-minute task.
-      Read a resource, write down the obstacle, or ask a mentor.</p>
-    <label>What's blocking you?
-      <textarea id="helpNote" rows="3"
-        placeholder="I need help with..."></textarea>
-    </label>
-    <button class="btn yellow" id="saveHelp">
-      SAVE QUESTION TO JOURNAL
+
+    <h2>
+      QUEST ASSISTANCE
+    </h2>
+
+    <button data-close aria-label="Close">
+      X
     </button>
-    <button class="btn outline" data-switch="resourcesModal">
+
+  </div>
+
+  <div class="modal-body">
+
+    <h3 id="helpQuest"></h3>
+
+    <p>
+      Every adventurer gets stuck sometimes.
+      Break your quest into smaller steps,
+      explore resources or ask a mentor.
+    </p>
+
+    <label for="helpNote">
+      WHAT'S BLOCKING YOUR PROGRESS?
+    </label>
+
+    <textarea
+      id="helpNote"
+      rows="3"
+      placeholder="I need help with..."></textarea>
+
+    <button
+      class="btn yellow"
+      id="saveHelp">
+
+      SAVE TO JOURNAL
+    </button>
+
+    <button
+      class="btn outline"
+      data-switch="resourcesModal">
+
       BROWSE RESOURCES
     </button>
-    <button class="btn outline" data-switch="mentorsModal">
+
+    <button
+      class="btn outline"
+      data-switch="mentorsModal">
+
       FIND A MENTOR
     </button>
+
   </div>
+
 </dialog>
 
-<div id="toast" role="status" aria-live="polite"></div>
-<script src="hub.js" defer></script>
+
+<!-- ==========================================
+     GAME NOTIFICATIONS
+========================================== -->
+
+<div
+  id="toast"
+  role="status"
+  aria-live="polite">
+</div>
+
 </body>
 </html>
